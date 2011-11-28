@@ -8,10 +8,6 @@ namespace AutoReservation.Common.Interfaces
 {
     interface IAutoReservationService
     {
-        private virtual Dictionary<int, AutoDto> autos;
-        private virtual Dictionary<int, ReservationDto> reservationen;
-        private virtual Dictionary<int, KundeDto> kunden;
-
         public virtual List<AutoDto> GetAutos();
         public virtual List<ReservationDto> GetReservationen();
         public virtual List<KundeDto> GetKunden();
