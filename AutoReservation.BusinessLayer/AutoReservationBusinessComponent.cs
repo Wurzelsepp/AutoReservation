@@ -59,8 +59,8 @@ namespace AutoReservation.BusinessLayer
         }
         public void DeleteKunde(Kunde kundeDelete)
         {
-            context.Autos.Attach(autoDelete);
-            context.Autos.DeleteObject(autoDelete);
+            context.Kunden.Attach(kundeDelete);
+            context.Kunden.DeleteObject(kundeDelete);
         }
     }
 }
