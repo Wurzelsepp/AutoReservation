@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoReservation.Dal;
+using System.Data;
 
 namespace AutoReservation.BusinessLayer
 {
@@ -22,13 +23,27 @@ namespace AutoReservation.BusinessLayer
         }
         public void EditAuto(Auto autoOriginal, Auto autoModified)
         {
-            context.Autos.Attach(autoOriginal);
-            context.Autos.ApplyCurrentValues(autoModified);
+            try
+            {
+                context.Autos.Attach(autoOriginal);
+                context.Autos.ApplyCurrentValues(autoModified);
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+            }
         }
         public void DeleteAuto(Auto autoDelete)
         {
-            context.Autos.Attach(autoDelete);
-            context.Autos.DeleteObject(autoDelete);
+            try
+            {
+                context.Autos.Attach(autoDelete);
+                context.Autos.DeleteObject(autoDelete);
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+            }
         }
 
         // Reservationen
@@ -38,13 +53,27 @@ namespace AutoReservation.BusinessLayer
         }
         public void EditReservation(Reservation reservationOriginal, Reservation reservationModified)
         {
-            context.Reservationen.Attach(reservationOriginal);
-            context.Reservationen.ApplyCurrentValues(reservationModified);
+            try
+            {
+                context.Reservationen.Attach(reservationOriginal);
+                context.Reservationen.ApplyCurrentValues(reservationModified);
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+            }
         }
         public void DeleteReservation(Reservation reservationDelete)
         {
-            context.Reservationen.Attach(reservationDelete);
-            context.Reservationen.DeleteObject(reservationDelete);
+            try
+            {
+                context.Reservationen.Attach(reservationDelete);
+                context.Reservationen.DeleteObject(reservationDelete);
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+            }
         }
 
         // Kunden
@@ -54,13 +83,27 @@ namespace AutoReservation.BusinessLayer
         }
         public void EditKunde(Kunde kundeOriginal, Kunde kundeModified)
         {
-            context.Kunden.Attach(kundeOriginal);
-            context.Kunden.ApplyCurrentValues(kundeModified);
+            try
+            {
+                context.Kunden.Attach(kundeOriginal);
+                context.Kunden.ApplyCurrentValues(kundeModified);
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+            }
         }
         public void DeleteKunde(Kunde kundeDelete)
         {
-            context.Kunden.Attach(kundeDelete);
-            context.Kunden.DeleteObject(kundeDelete);
+            try
+            {
+                context.Kunden.Attach(kundeDelete);
+                context.Kunden.DeleteObject(kundeDelete);
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+            }
         }
     }
 }
