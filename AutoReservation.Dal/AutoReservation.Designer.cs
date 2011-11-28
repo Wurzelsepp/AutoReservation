@@ -163,26 +163,8 @@ namespace AutoReservation.Dal
     [KnownTypeAttribute(typeof(LuxusklasseAuto))]
     [KnownTypeAttribute(typeof(MittelklasseAuto))]
     [KnownTypeAttribute(typeof(StandardAuto))]
-    public partial class Auto : EntityObject
+    public abstract partial class Auto : EntityObject
     {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Auto object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="marke">Initial value of the Marke property.</param>
-        /// <param name="tagestarif">Initial value of the Tagestarif property.</param>
-        public static Auto CreateAuto(global::System.Int32 id, global::System.String marke, global::System.Int32 tagestarif)
-        {
-            Auto auto = new Auto();
-            auto.Id = id;
-            auto.Marke = marke;
-            auto.Tagestarif = tagestarif;
-            return auto;
-        }
-
-        #endregion
         #region Primitive Properties
     
         /// <summary>
@@ -463,14 +445,12 @@ namespace AutoReservation.Dal
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="marke">Initial value of the Marke property.</param>
         /// <param name="tagestarif">Initial value of the Tagestarif property.</param>
-        /// <param name="basistarif">Initial value of the Basistarif property.</param>
-        public static LuxusklasseAuto CreateLuxusklasseAuto(global::System.Int32 id, global::System.String marke, global::System.Int32 tagestarif, global::System.String basistarif)
+        public static LuxusklasseAuto CreateLuxusklasseAuto(global::System.Int32 id, global::System.String marke, global::System.Int32 tagestarif)
         {
             LuxusklasseAuto luxusklasseAuto = new LuxusklasseAuto();
             luxusklasseAuto.Id = id;
             luxusklasseAuto.Marke = marke;
             luxusklasseAuto.Tagestarif = tagestarif;
-            luxusklasseAuto.Basistarif = basistarif;
             return luxusklasseAuto;
         }
 
@@ -480,9 +460,9 @@ namespace AutoReservation.Dal
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String Basistarif
+        public Nullable<global::System.Int32> Basistarif
         {
             get
             {
@@ -492,13 +472,13 @@ namespace AutoReservation.Dal
             {
                 OnBasistarifChanging(value);
                 ReportPropertyChanging("Basistarif");
-                _Basistarif = StructuralObject.SetValidValue(value, false);
+                _Basistarif = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Basistarif");
                 OnBasistarifChanged();
             }
         }
-        private global::System.String _Basistarif;
-        partial void OnBasistarifChanging(global::System.String value);
+        private Nullable<global::System.Int32> _Basistarif;
+        partial void OnBasistarifChanging(Nullable<global::System.Int32> value);
         partial void OnBasistarifChanged();
 
         #endregion

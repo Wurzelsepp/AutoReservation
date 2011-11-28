@@ -93,11 +93,11 @@
             <End Role="Reservation" EntitySet="Reservationen" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Auto">
+        <EntityType Name="Auto" Abstract="true">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
+          <Property Name="Id" Type="Int32" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" Nullable="false" />
           <Property Name="Marke" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" ConcurrencyMode="Fixed" />
           <Property Name="Tagestarif" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Reservation" Relationship="AutoReservationModel.FK_Reservation_Auto" FromRole="Auto" ToRole="Reservation" />
@@ -153,7 +153,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityType Name="LuxusklasseAuto" BaseType="AutoReservationModel.Auto" >
-          <Property Type="String" Name="Basistarif" Nullable="false" />
+          <Property Type="Int32" Name="Basistarif" Nullable="true" />
         </EntityType>
         <EntityType Name="MittelklasseAuto" BaseType="AutoReservationModel.Auto" />
         <EntityType Name="StandardAuto" BaseType="AutoReservationModel.Auto" />
@@ -169,6 +169,25 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Tagestarif" ColumnName="Tagestarif" />
                 <ScalarProperty Name="Marke" ColumnName="Marke" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(AutoReservationModel.LuxusklasseAuto)">
+              <MappingFragment StoreEntitySet="Auto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Basistarif" ColumnName="Basistarif" />
+                <Condition ColumnName="AutoKlasse" Value="0" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(AutoReservationModel.MittelklasseAuto)">
+              <MappingFragment StoreEntitySet="Auto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <Condition ColumnName="AutoKlasse" Value="1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(AutoReservationModel.StandardAuto)">
+              <MappingFragment StoreEntitySet="Auto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <Condition ColumnName="AutoKlasse" Value="2" />
               </MappingFragment>
             </EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Kunden"><EntityTypeMapping TypeName="AutoReservationModel.Kunde"><MappingFragment StoreEntitySet="Kunde">
@@ -216,28 +235,30 @@
           <ConnectorPoint PointX="6.5" PointY="2.4901432291666667" />
           <ConnectorPoint PointX="5.875" PointY="2.4901432291666667" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="AutoReservationModel.LuxusklasseAuto" Width="1.5" PointX="0.5" PointY="4.5" Height="1.2110807291666665" />
+        <EntityTypeShape EntityType="AutoReservationModel.LuxusklasseAuto" Width="1.5" PointX="0.625" PointY="4" Height="1.2110807291666665" />
         <InheritanceConnector EntityType="AutoReservationModel.LuxusklasseAuto" >
           <ConnectorPoint PointX="2.25" PointY="3.162985026041667" />
-          <ConnectorPoint PointX="2.25" PointY="4.125" />
-          <ConnectorPoint PointX="1.25" PointY="4.125" />
-          <ConnectorPoint PointX="1.25" PointY="4.5" />
+          <ConnectorPoint PointX="2.25" PointY="3.625" />
+          <ConnectorPoint PointX="1.375" PointY="3.625" />
+          <ConnectorPoint PointX="1.375" PointY="4" />
         </InheritanceConnector>
-        <EntityTypeShape EntityType="AutoReservationModel.MittelklasseAuto" Width="1.5" PointX="2.375" PointY="4.625" Height="1.0187792968749996" />
+        <EntityTypeShape EntityType="AutoReservationModel.MittelklasseAuto" Width="1.5" PointX="2.5" PointY="4.25" Height="1.0187792968749996" />
         <InheritanceConnector EntityType="AutoReservationModel.MittelklasseAuto" >
           <ConnectorPoint PointX="2.25" PointY="3.162985026041667" />
           <ConnectorPoint PointX="2.25" PointY="3.5379850260416674" />
-          <ConnectorPoint PointX="3.125" PointY="3.5379850260416674" />
-          <ConnectorPoint PointX="3.125" PointY="4.625" />
+          <ConnectorPoint PointX="3.25" PointY="3.5379850260416674" />
+          <ConnectorPoint PointX="3.25" PointY="4.25" />
         </InheritanceConnector>
-        <EntityTypeShape EntityType="AutoReservationModel.StandardAuto" Width="1.5" PointX="4.375" PointY="4.625" Height="1.0187792968749996" />
+        <EntityTypeShape EntityType="AutoReservationModel.StandardAuto" Width="1.5" PointX="4.25" PointY="4.25" Height="1.0187792968749996" />
         <InheritanceConnector EntityType="AutoReservationModel.StandardAuto" >
           <ConnectorPoint PointX="2.25" PointY="3.162985026041667" />
-          <ConnectorPoint PointX="2.25" PointY="4.25" />
-          <ConnectorPoint PointX="3.0416666666666665" PointY="4.2499999999999991" />
-          <ConnectorPoint PointX="3.2083333333333335" PointY="4.25" />
-          <ConnectorPoint PointX="5.125" PointY="4.25" />
-          <ConnectorPoint PointX="5.125" PointY="4.625" />
+          <ConnectorPoint PointX="2.25" PointY="3.8" />
+          <ConnectorPoint PointX="2.325" PointY="3.8" />
+          <ConnectorPoint PointX="2.325" PointY="3.95" />
+          <ConnectorPoint PointX="3.1666666666666665" PointY="3.9499999999999997" />
+          <ConnectorPoint PointX="3.3333333333333335" PointY="3.95" />
+          <ConnectorPoint PointX="5" PointY="3.95" />
+          <ConnectorPoint PointX="5" PointY="4.25" />
         </InheritanceConnector>
       </Diagram>
     </Diagrams>
