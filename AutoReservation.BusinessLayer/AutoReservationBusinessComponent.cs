@@ -6,7 +6,7 @@ using AutoReservation.Dal;
 
 namespace AutoReservation.BusinessLayer
 {
-    class AutoReservationBusinessComponent
+    public class AutoReservationBusinessComponent
     {
         AutoReservationEntities context;
 
@@ -31,6 +31,12 @@ namespace AutoReservation.BusinessLayer
             context.Autos.DeleteObject(autoDelete);
         }
 
+        public Auto GetAuto(int key)
+        {
+            return context.Autos.ElementAt(key);
+        }
+
+
         // Reservationen
         public void AddResevation(Reservation reservation)
         {
@@ -47,6 +53,11 @@ namespace AutoReservation.BusinessLayer
             context.Reservationen.DeleteObject(reservationDelete);
         }
 
+        public Reservation GetReservation(int key)
+        {
+            return (Reservation)context.Reservationen.ElementAt(key);
+        }
+
         // Kunden
         public void AddKunde(Kunde kunde)
         {
@@ -61,6 +72,11 @@ namespace AutoReservation.BusinessLayer
         {
             context.Kunden.Attach(kundeDelete);
             context.Kunden.DeleteObject(kundeDelete);
+        }
+
+        public Kunde GetKunde(int key)
+        {
+            return (Kunde)context.Kunden.ElementAt(key);
         }
     }
 }
