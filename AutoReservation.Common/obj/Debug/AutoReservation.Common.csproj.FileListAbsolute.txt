@@ -1,0 +1,5 @@
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Common\bin\Debug\AutoReservation.Common.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Common\bin\Debug\AutoReservation.Common.pdb
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Common\obj\Debug\ResolveAssemblyReference.cache
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Common\obj\Debug\AutoReservation.Common.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Common\obj\Debug\AutoReservation.Common.pdb

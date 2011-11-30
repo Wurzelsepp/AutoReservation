@@ -1,0 +1,12 @@
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Service.Wcf.dll.config
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Service.Wcf.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Service.Wcf.pdb
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.BusinessLayer.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Common.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Dal.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.BusinessLayer.pdb
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Common.pdb
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\bin\Debug\AutoReservation.Dal.pdb
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\obj\Debug\ResolveAssemblyReference.cache
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\obj\Debug\AutoReservation.Service.Wcf.dll
+D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.Service.Wcf\obj\Debug\AutoReservation.Service.Wcf.pdb
