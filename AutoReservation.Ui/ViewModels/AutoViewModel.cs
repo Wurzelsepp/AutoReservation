@@ -61,11 +61,11 @@ namespace AutoReservation.Ui.ViewModels
         {
             Autos.Clear();
             autosOriginal.Clear();
-            foreach (AutoDto auto in Service.Autos)
-            {
-                Autos.Add(auto);
-                autosOriginal.Add((AutoDto)auto.Clone());
-            }
+            //foreach (AutoDto auto in Service.Autos)
+            //{
+            //    Autos.Add(auto);
+            //    autosOriginal.Add((AutoDto)auto.Clone());
+            //}
             SelectedAuto = Autos.FirstOrDefault();
         }
 
@@ -101,7 +101,7 @@ namespace AutoReservation.Ui.ViewModels
             {
                 if (auto.Id == default(int))
                 {
-                    Service.InsertAuto(auto);
+                    //Service.InsertAuto(auto);
                 }
                 else
                 {
