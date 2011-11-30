@@ -1,7 +1,0 @@
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\bin\Debug\AutoReservation.BusinessLayer.dll
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\bin\Debug\AutoReservation.BusinessLayer.pdb
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\bin\Debug\AutoReservation.Dal.dll
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\bin\Debug\AutoReservation.Dal.pdb
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\obj\Debug\ResolveAssemblyReference.cache
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\obj\Debug\AutoReservation.BusinessLayer.dll
-D:\HSR\Microsoft-Technologien\MsTe\Uebungen\8 Miniprojekt\Vorgabe\AutoReservation.BusinessLayer\obj\Debug\AutoReservation.BusinessLayer.pdb
