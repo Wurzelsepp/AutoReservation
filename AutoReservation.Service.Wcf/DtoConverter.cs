@@ -46,7 +46,7 @@ namespace AutoReservation.Service.Wcf
             if (auto is LuxusklasseAuto)
             {
                 dto.AutoKlasse = AutoKlasse.Luxusklasse;
-                dto.Basistarif = ((LuxusklasseAuto)auto).Basistarif;
+                dto.Basistarif = (int)((LuxusklasseAuto)auto).Basistarif;
             }
 
 
@@ -102,7 +102,7 @@ namespace AutoReservation.Service.Wcf
 
             Reservation reservation = new Reservation
             {
-                ReservationNr = dto.ReservationNr,
+                ReservationsNr = dto.ReservationNr,
                 Von = dto.Von,
                 Bis = dto.Bis,
             };
@@ -118,7 +118,7 @@ namespace AutoReservation.Service.Wcf
 
             return new ReservationDto
             {
-                ReservationNr = reservation.ReservationNr,
+                ReservationNr = reservation.ReservationsNr,
                 Von = reservation.Von,
                 Bis = reservation.Bis,
                 Auto = ConvertToDto(reservation.Auto),

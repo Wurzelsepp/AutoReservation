@@ -7,7 +7,7 @@ using System.Data;
 
 namespace AutoReservation.BusinessLayer
 {
-    class AutoReservationBusinessComponent
+    public class AutoReservationBusinessComponent
     {
         AutoReservationEntities context;
 
@@ -46,6 +46,12 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
+        public Auto GetAuto(int key)
+        {
+            return context.Autos.ElementAt(key);
+        }
+
+
         // Reservationen
         public void AddResevation(Reservation reservation)
         {
@@ -76,6 +82,11 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
+        public Reservation GetReservation(int key)
+        {
+            return (Reservation)context.Reservationen.ElementAt(key);
+        }
+
         // Kunden
         public void AddKunde(Kunde kunde)
         {
@@ -104,6 +115,11 @@ namespace AutoReservation.BusinessLayer
             {
                 throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
             }
+        }
+
+        public Kunde GetKunde(int key)
+        {
+            return (Kunde)context.Kunden.ElementAt(key);
         }
     }
 }
