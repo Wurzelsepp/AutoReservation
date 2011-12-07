@@ -51,6 +51,10 @@ namespace AutoReservation.BusinessLayer
             return context.Autos.ElementAt(key);
         }
 
+        public List<Auto> GetAutos()
+        {
+            return context.Autos.ToList<Auto>();
+        }
 
         // Reservationen
         public void AddResevation(Reservation reservation)
@@ -87,6 +91,11 @@ namespace AutoReservation.BusinessLayer
             return (Reservation)context.Reservationen.ElementAt(key);
         }
 
+        public List<Reservation> GetReservations()
+        {
+            return context.Reservationen.ToList<Reservation>();
+        }
+
         // Kunden
         public void AddKunde(Kunde kunde)
         {
@@ -120,6 +129,11 @@ namespace AutoReservation.BusinessLayer
         public Kunde GetKunde(int key)
         {
             return (Kunde)context.Kunden.ElementAt(key);
+        }
+
+        public List<Kunde> GetKunden()
+        {
+            return context.Kunden.ToList<Kunde>();
         }
     }
 }

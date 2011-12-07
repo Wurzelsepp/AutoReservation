@@ -63,11 +63,11 @@ namespace AutoReservation.Ui.ViewModels
         {
             Reservationen.Clear();
             reservationenOriginal.Clear();
-            //foreach (ReservationDto reservation in Service.Reservationen)
-            //{
-            //    Reservationen.Add(reservation);
-            //    reservationenOriginal.Add((ReservationDto)reservation.Clone());
-            //}
+            foreach (ReservationDto reservation in Service.Reservationen)
+            {
+                Reservationen.Add(reservation);
+                reservationenOriginal.Add((ReservationDto)reservation.Clone());
+            }
             SelectedReservation = Reservationen.FirstOrDefault();
         }
 
@@ -103,7 +103,7 @@ namespace AutoReservation.Ui.ViewModels
             {
                 if (reservation.ReservationNr == default(int))
                 {
-                    //Service.InsertReservation(reservation);
+                    Service.AddReservation(reservation);
                 }
                 else
                 {

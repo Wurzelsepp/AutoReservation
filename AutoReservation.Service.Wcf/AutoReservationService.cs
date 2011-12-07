@@ -3,6 +3,7 @@ using System.Diagnostics;
 using AutoReservation.Common.Interfaces;
 using AutoReservation.BusinessLayer;
 using AutoReservation.Common.DataTransferObjects;
+using System.Collections.Generic;
 
 namespace AutoReservation.Service.Wcf
 {
@@ -110,6 +111,43 @@ namespace AutoReservation.Service.Wcf
             WriteActualMethod();
             instance.DeleteKunde(toDelete.ConvertToEntity());
             throw new NotImplementedException();
+        }
+
+
+        public List<AutoDto> Autos
+        {
+            get
+            {
+                WriteActualMethod();
+                List<AutoDto> ret = new List<AutoDto>();
+                foreach (Dal.Auto auto in instance.GetAutos())
+                    ret.Add(auto.ConvertToDto());
+                return ret;
+            }          
+        }
+
+        public List<ReservationDto> Reservationen
+        {
+            get
+            {
+                WriteActualMethod();
+                List<ReservationDto> ret = new List<ReservationDto>();
+                foreach (Dal.Reservation res in instance.GetReservations())
+                    ret.Add(res.ConvertToDto());
+                return ret;
+            }    
+        }
+
+        public System.Collections.Generic.List<KundeDto> Kunden
+        {
+            get
+            {
+                WriteActualMethod();
+                List<KundeDto> ret = new List<KundeDto>();
+                foreach (Dal.Kunde kunde in instance.GetKunden())
+                    ret.Add(kunde.ConvertToDto());
+                return ret;
+            } 
         }
     }
     //Der Service-Layer ist in dieser einfachen 
