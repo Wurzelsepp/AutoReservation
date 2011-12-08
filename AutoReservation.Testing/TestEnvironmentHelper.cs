@@ -4,7 +4,9 @@ namespace AutoReservation.Testing
 {
     public static class TestEnvironmentHelper
     {
+<<<<<<< HEAD
         private const string ConnectionString = @"Data Source=.\SQLExpress;Initial Catalog=AutoReservation;Integrated Security=True";
+>>>>>>> 2a5ec23b85ded3700a0430accd03fa956222f507
 
         private static void InsertKunden()
         {

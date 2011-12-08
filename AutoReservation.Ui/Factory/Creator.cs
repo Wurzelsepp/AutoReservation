@@ -12,7 +12,7 @@ namespace AutoReservation.Ui.Factory
     {
         public abstract IAutoReservationService CreateAutoReservationServiceInstance();
 
-        public Creator GetCreatorInstance()
+        public static Creator GetCreatorInstance()
         {
             Type businessLayerType = Type.GetType(Settings.Default.BusinessLayerType);
             return (Creator)Activator.CreateInstance(businessLayerType);

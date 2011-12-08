@@ -103,7 +103,7 @@ namespace AutoReservation.Ui.ViewModels
             {
                 if (kunde.Id == default(int))
                 {
-                    //Service.InsertKunde(kunde);
+                    Service.AddKunde(kunde);
                 }
                 else
                 {

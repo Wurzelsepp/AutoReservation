@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Threading;
 using AutoReservation.Common.Interfaces;
-//using AutoReservation.Ui.Factory;
+using AutoReservation.Ui.Factory;
 
 namespace AutoReservation.Ui.ViewModels
 {
@@ -17,10 +17,11 @@ namespace AutoReservation.Ui.ViewModels
         private PropertyChangingEventHandler propertyChangingEvent;
         private PropertyChangedEventHandler propertyChangedEvent;
 
+        
         protected ViewModelBase()
         {
             dispatcher = Dispatcher.CurrentDispatcher;
-            //Service = Creator.GetCreatorInstance().CreateBusinessLayerInstance();
+            Service = Creator.GetCreatorInstance().CreateAutoReservationServiceInstance();
             Load();
         }
 
