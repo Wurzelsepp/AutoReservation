@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AutoReservation.Common.DataTransferObjects;
 using System.ServiceModel;
+using System.Runtime.Serialization;
 
 namespace AutoReservation.Common.Interfaces
 {
@@ -43,8 +44,11 @@ namespace AutoReservation.Common.Interfaces
         void DeleteKunde(KundeDto toDelete);
 
         //Collections        
+        [DataMember]
         List<AutoDto> Autos { get; }
+        [DataMember]
         List<ReservationDto> Reservationen { get; }
+        [DataMember]
         List<KundeDto> Kunden { get; }
 
     }

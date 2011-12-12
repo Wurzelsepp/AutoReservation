@@ -36,21 +36,31 @@ namespace AutoReservation.Common.DataTransferObjects
                 bis = value;
                 SendPropertyChanged(() => Bis);
             }
-        } }
-        public AutoDto Auto { get { return auto; } set {
+        }
+        }
+
+        public KundeDto Kunde
+        {
+            get { return kunde; }
+            set {
+                if (kunde != value)
+                {
+                    SendPropertyChanging(() => Kunde);
+                    kunde = value;
+                    SendPropertyChanged(() => Kunde);
+                }
+            }
+        }
+
+        public AutoDto Auto
+        {
+            get { return auto; }
+            set {
             if (auto != value)
             {
                 SendPropertyChanging(() => Auto);
                 auto = value;
                 SendPropertyChanged(() => Auto);
-            }
-        } }
-        public KundeDto Kunde { get { return kunde; } set {
-            if (kunde != value)
-            {
-                SendPropertyChanging(() => Kunde);
-                kunde = value;
-                SendPropertyChanged(() => Kunde);
             }
         } }
 

@@ -43,7 +43,8 @@ namespace AutoReservation.Common.DataTransferObjects
                 geburtsdatum = value;
                 SendPropertyChanged(() => Geburtsdatum);
             }
-        } }
+        }
+        }
 
         public override string Validate()
         {

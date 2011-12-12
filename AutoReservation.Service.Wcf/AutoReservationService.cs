@@ -138,7 +138,7 @@ namespace AutoReservation.Service.Wcf
             }    
         }
 
-        public System.Collections.Generic.List<KundeDto> Kunden
+        public List<KundeDto> Kunden
         {
             get
             {

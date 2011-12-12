@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoReservation.Common.DataTransferObjects;
 using AutoReservation.Dal;
+using AutoReservation.Common.DataTransferObjects;
 
 namespace AutoReservation.Service.Wcf
 {
@@ -105,25 +105,44 @@ namespace AutoReservation.Service.Wcf
                 ReservationsNr = dto.ReservationNr,
                 Von = dto.Von,
                 Bis = dto.Bis,
+                AutoId = dto.Auto.Id,
+                KundeId = dto.Kunde.Id
             };
-            reservation.AutoId = dto.Auto.Id;
-            reservation.KundeId = dto.Kunde.Id;
-
 
             return reservation;
         }
         public static ReservationDto ConvertToDto(this Reservation reservation)
         {
-            if (reservation == null) { return null; }
+            //Console.WriteLine("###AutoReservation.Service.Wcf.DtoConverter.ConvertToDto reservation");
+            //Console.WriteLine("reservation auto ref: " + reservation.AutoReference);
+            //Console.WriteLine("reservation auto Id: " + reservation.AutoId);
+            //Console.WriteLine("reservation auto marke: " + reservation.Auto.Marke);
+            //Console.WriteLine("reservation auto tagestarif: " + reservation.Auto.Tagestarif);
 
-            return new ReservationDto
+            //Console.WriteLine("reservation kunde ref: " + reservation.KundeReference);
+            //Console.WriteLine("reservation kunde id: " + reservation.KundeId);
+            //Console.WriteLine("reservation kunde nachn: " + reservation.Kunde.Nachname);
+            //Console.WriteLine("reservation kunde vorn: " + reservation.Kunde.Vorname);
+            //Console.WriteLine("reservation kunde geb: " + reservation.Kunde.Geburtsdatum);
+
+            if (reservation == null) { return null; }
+            AutoDto autoTemp = new AutoDto();
+            autoTemp.Id = reservation.AutoId;
+            
+            KundeDto kundeTemp =new KundeDto();
+            kundeTemp.Id = reservation.KundeId;
+            ReservationDto reservationDto =  new ReservationDto
             {
                 ReservationNr = reservation.ReservationsNr,
                 Von = reservation.Von,
                 Bis = reservation.Bis,
-                Auto = ConvertToDto(reservation.Auto),
-                Kunde = ConvertToDto(reservation.Kunde)
+                Auto = autoTemp,
+                Kunde = kundeTemp
+                //Auto = DtoConverter.ConvertToDto(reservation.AutoId),
+                //Kunde = DtoConverter.ConvertToDto(reservation.KundeId)
             };
+
+            return reservationDto;
         }
         public static List<Reservation> ConvertToEntities(this IEnumerable<ReservationDto> dtos)
         {

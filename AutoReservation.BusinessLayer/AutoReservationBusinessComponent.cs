@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoReservation.Dal;
 using System.Data;
+using System.Collections.Generic;
 
 namespace AutoReservation.BusinessLayer
 {
@@ -48,21 +49,26 @@ namespace AutoReservation.BusinessLayer
                 }
             }
         }
-
         public Auto GetAuto(int key)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
                 var result = from auto in context.Autos
-                                           where auto.Id == key
-                                           select auto;
+                             where auto.Id == key
+                             select auto;
                 return result.FirstOrDefault();
             }
         }
-
         public List<Auto> GetAutos()
         {
-            return context.Autos.ToList<Auto>();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                var result = from auto in context.Autos
+                             select auto;
+                return result.ToList();
+            }
+
+            //return context.Autos.ToList<Auto>();
         }
 
         // Reservationen
@@ -106,21 +112,43 @@ namespace AutoReservation.BusinessLayer
                 }
             }
         }
-
         public Reservation GetReservation(int key)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
                 var result = from reservation in context.Reservationen
-                                where reservation.ReservationsNr == key
-                                select reservation;
+                             where reservation.ReservationsNr == key
+                             select reservation;
                 return result.FirstOrDefault();
             }
         }
-
         public List<Reservation> GetReservations()
         {
-            return context.Reservationen.ToList<Reservation>();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                //Hier werden nicht alle reservationen zurückgegeben
+                var result = from reservation in context.Reservationen
+                             select reservation;
+
+                //Test output begin
+                Reservation test = (Reservation)result.FirstOrDefault();
+                //Console.WriteLine("AutoReservationBusinessComponent Resultate GetReservation:");
+
+                //Console.WriteLine("AutoId:" +test.AutoId );
+                //Console.WriteLine("reservation auto ref: " + test.AutoReference);
+                //Console.WriteLine("reservation auto Id: " + test.Auto.Id);
+                //Console.WriteLine("reservation auto marke: " + test.Auto.Marke);
+                //Console.WriteLine("reservation auto tagestarif: " + test.Auto.Tagestarif);
+
+                //Console.WriteLine("reservation kunde ref: " + test.KundeReference);
+                //Console.WriteLine("reservation kunde id: " + test.Kunde.Id);
+                //Console.WriteLine("reservation kunde nachn: " + test.Kunde.Nachname);
+                //Console.WriteLine("reservation kunde vorn: " + test.Kunde.Vorname);
+                //Console.WriteLine("reservation kunde geb: " + test.Kunde.Geburtsdatum);
+                //Test output end
+
+                return result.ToList();
+            }
         }
 
         // Kunden
@@ -162,21 +190,26 @@ namespace AutoReservation.BusinessLayer
                 }
             }
         }
-
         public Kunde GetKunde(int key)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
                 var result = from kunde in context.Kunden
-                                where kunde.Id == key
-                                select kunde;
+                             where kunde.Id == key
+                             select kunde;
                 return result.FirstOrDefault();
             }
         }
-
         public List<Kunde> GetKunden()
         {
-            return context.Kunden.ToList<Kunde>();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                var result = from kunde in context.Kunden
+                             select kunde;
+                return result.ToList();
+            }
+
+            //return context.Kunden.ToList<Kunde>();
         }
     }
 }
