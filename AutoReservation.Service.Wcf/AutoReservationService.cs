@@ -54,63 +54,63 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
             instance.AddAuto(auto.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void AddReservation(ReservationDto reservation)
         {
             WriteActualMethod();
             instance.AddResevation(reservation.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void AddKunde(KundeDto kunde)
         {
             WriteActualMethod();
             instance.AddKunde(kunde.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UpdateAuto(AutoDto modified, AutoDto original)
         {
             WriteActualMethod();
             instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UpdateReservation(ReservationDto modified, ReservationDto original)
         {
             WriteActualMethod();
             instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UpdateKunde(KundeDto modified, KundeDto original)
         {
             WriteActualMethod();
             instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void DeleteAuto(AutoDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteAuto(toDelete.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void DeleteReservation(ReservationDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteReservation(toDelete.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void DeleteKunde(KundeDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteKunde(toDelete.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 

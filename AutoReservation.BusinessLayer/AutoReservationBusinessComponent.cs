@@ -8,7 +8,6 @@ namespace AutoReservation.BusinessLayer
 {
     public class AutoReservationBusinessComponent
     {
-
         // Autos
         public void AddAuto(Auto auto)
         {
@@ -23,9 +22,20 @@ namespace AutoReservation.BusinessLayer
             {
                 try
                 {
+                    //Console.WriteLine("arbc_editauto_Attach");
                     context.Autos.Attach(autoOriginal);
+                    //Console.WriteLine("arbc_editauto_apllycurrentvalues");
                     context.Autos.ApplyCurrentValues(autoModified);
+                    //Console.WriteLine("arbc_editauto_execute");
+                    context.Autos.Execute(System.Data.Objects.MergeOption.PreserveChanges);
+                    //Console.WriteLine("arbc_editauto_changeobjectstate");
+                    //context.ObjectStateManager.ChangeObjectState(autoOriginal, EntityState.Modified);
+                    //Console.WriteLine("arbc_editauto_acceptallchanges");
+                    context.AcceptAllChanges();
+                    //Console.WriteLine("arbc_editauto_savechanges");
                     context.SaveChanges();
+                    //Console.WriteLine("arbc_editauto_detach");
+                    //context.Autos.Detach(autoModified);
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
@@ -37,11 +47,11 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-
                 try
                 {
                     context.Autos.Attach(autoDelete);
-                    context.Autos.DeleteObject(autoDelete);
+                    context.DeleteObject(autoDelete);
+                    context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
@@ -83,11 +93,12 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-
                 try
                 {
                     context.Reservationen.Attach(reservationOriginal);
                     context.Reservationen.ApplyCurrentValues(reservationModified);
+                    context.Reservationen.Execute(System.Data.Objects.MergeOption.PreserveChanges);
+                    context.AcceptAllChanges();
                     context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
@@ -100,11 +111,11 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-
                 try
                 {
                     context.Reservationen.Attach(reservationDelete);
-                    context.Reservationen.DeleteObject(reservationDelete);
+                    context.DeleteObject(reservationDelete);
+                    context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
@@ -167,6 +178,8 @@ namespace AutoReservation.BusinessLayer
                 {
                     context.Kunden.Attach(kundeOriginal);
                     context.Kunden.ApplyCurrentValues(kundeModified);
+                    context.Kunden.Execute(System.Data.Objects.MergeOption.PreserveChanges);
+                    context.AcceptAllChanges();
                     context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
@@ -182,7 +195,8 @@ namespace AutoReservation.BusinessLayer
                 try
                 {
                     context.Kunden.Attach(kundeDelete);
-                    context.Kunden.DeleteObject(kundeDelete);
+                    context.DeleteObject(kundeDelete);
+                    context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
