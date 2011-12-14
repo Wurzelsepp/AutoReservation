@@ -1,11 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Interface Name="AutoReservation.Common.Interfaces.IAutoReservationService">
-    <Position X="3.75" Y="0.5" Width="4" />
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AutoReservation.Common.DataTransferObjects.AutoDto">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAICAAASAACAEAAFBAAAAQQAAAAAAAAAAAAAAAAAAhA=</HashCode>
+      <FileName>DataTransferObjects\AutoDto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AutoKlasse" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AutoReservation.Common.DataTransferObjects.DtoBase" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAACAAAAQCAAAAAABiAAAAEAAAAAAAAAAABA=</HashCode>
+      <FileName>DataTransferObjects\DtoBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoReservation.Common.DataTransferObjects.KundeDto">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgCAAAAEAAAAgAAAAIAAAAACAAAAAgAAAhA=</HashCode>
+      <FileName>DataTransferObjects\KundeDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoReservation.Common.DataTransferObjects.ReservationDto">
+    <Position X="5.75" Y="1.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQACIAAAECAAAACAAAAAgIAAAIAAAAAAAABA=</HashCode>
+      <FileName>DataTransferObjects\ReservationDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="AutoReservation.Common.Interfaces.IAutoReservationService" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAgAAgAACQAAAAEUAAAABIAAAAAAAAAAKAAAgAAAAA=</HashCode>
       <FileName>Interfaces\IAutoReservationService.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Enum Name="AutoReservation.Common.DataTransferObjects.AutoKlasse">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>DataTransferObjects\AutoDto.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

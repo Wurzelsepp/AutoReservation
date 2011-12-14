@@ -1,7 +1,9 @@
-﻿using System;
-using AutoReservation.BusinessLayer;
+﻿using AutoReservation.BusinessLayer;
 using AutoReservation.Dal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace AutoReservation.Testing
 {
@@ -12,52 +14,71 @@ namespace AutoReservation.Testing
         [TestMethod]
         public void UpdateAutoTest()
         {
-            TestEnvironmentHelper.InitializeTestData();
-            AutoReservationBusinessComponent arbc = new AutoReservationBusinessComponent();
-            
-            Auto autoOriginal = arbc.GetAuto(1);
-            Auto autoModified = arbc.GetAuto(1);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                TestEnvironmentHelper.InitializeTestData();
+                AutoReservationBusinessComponent arbc = new AutoReservationBusinessComponent();
 
-            autoModified.Marke="Fiat Punto Abart";
-            arbc.EditAuto(autoOriginal, autoModified);
+                var res = (from auto in context.Autos select auto).FirstOrDefault().Id;
+                //Console.WriteLine("Abgefragte Id:" + res);
 
-            autoOriginal = arbc.GetAuto(1);
-            Assert.AreEqual(autoOriginal, autoModified, "UpdateAutoTest: Autos sind nicht gleich nach Update");
+                Auto autoOriginal = arbc.GetAuto(res);
+                Auto autoModified = arbc.GetAuto(res);
+                //Console.WriteLine("Marke original vorher:" + autoOriginal.Marke);
+                //Console.WriteLine("Marke modified vorher:" + autoModified.Marke);
+
+                autoModified.Marke = "Fiat Punto Abart";
+                arbc.EditAuto(autoOriginal, autoModified);
+
+                //Auto autoControl = arbc.GetAuto(res);
+                //Console.WriteLine("Marke original nachher:" + autoOriginal.Marke);
+                //Console.WriteLine("Marke control  nachher:" + autoControl.Marke);
+                //Console.WriteLine("Marke modified nachher:" + autoModified.Marke);
+                
+                Assert.AreEqual(autoOriginal.Marke, autoModified.Marke, "UpdateAutoTest: Autos sind nicht gleich nach Update");
+            }
         }
 
         [TestMethod]
         public void UpdateKundeTest()
         {
-            TestEnvironmentHelper.InitializeTestData();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                TestEnvironmentHelper.InitializeTestData();
 
-            AutoReservationBusinessComponent arbc = new AutoReservationBusinessComponent();
+                AutoReservationBusinessComponent arbc = new AutoReservationBusinessComponent();
 
-            Kunde kundeOriginal = arbc.GetKunde(1);
-            Kunde kundeModified = arbc.GetKunde(1);
+                var res = (from kunde in context.Kunden select kunde).FirstOrDefault().Id;
 
-            kundeModified.Nachname = "Geiser";
-            arbc.EditKunde(kundeOriginal, kundeModified);
+                Kunde kundeOriginal = arbc.GetKunde(res);
+                Kunde kundeModified = arbc.GetKunde(res);
 
-            kundeOriginal = arbc.GetKunde(1);
-            Assert.AreEqual(kundeOriginal, kundeModified, "UpdateKundeTest: Kunden sind nicht gleich nach Update");
+                kundeModified.Nachname = "Geiser";
+                arbc.EditKunde(kundeOriginal, kundeModified);
+
+                Assert.AreEqual(kundeOriginal.Nachname, kundeModified.Nachname, "UpdateKundeTest: Kunden sind nicht gleich nach Update");
+            }        
         }
 
         [TestMethod]
         public void UpdateReservationTest()
         {
-            TestEnvironmentHelper.InitializeTestData();
-            TestEnvironmentHelper.InitializeTestData();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                TestEnvironmentHelper.InitializeTestData();
 
-            AutoReservationBusinessComponent arbc = new AutoReservationBusinessComponent();
+                AutoReservationBusinessComponent arbc = new AutoReservationBusinessComponent();
 
-            Reservation reservationOriginal = arbc.GetReservation(1);
-            Reservation reservationModified = arbc.GetReservation(1);
+                var res = (from reservation in context.Reservationen select reservation).FirstOrDefault().ReservationsNr;
 
-            reservationModified.Bis = new System.DateTime(2020, 1, 21);
-            arbc.EditReservation(reservationOriginal, reservationModified);
+                Reservation reservationOriginal = arbc.GetReservation(res);
+                Reservation reservationModified = arbc.GetReservation(res);
 
-            reservationOriginal = arbc.GetReservation(1);
-            Assert.AreEqual(reservationOriginal, reservationModified, "UpdateReservationTest: Reservationen sind nicht gleich nach Update");
-       }
+                reservationModified.Bis = new System.DateTime(2020, 1, 21);
+                arbc.EditReservation(reservationOriginal, reservationModified);
+
+                Assert.AreEqual(reservationOriginal.Bis, reservationModified.Bis, "UpdateReservationTest: Reservationen sind nicht gleich nach Update");
+            }
+        }
     }
 }

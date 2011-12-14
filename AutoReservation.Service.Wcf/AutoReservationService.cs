@@ -4,6 +4,8 @@ using AutoReservation.Common.Interfaces;
 using AutoReservation.BusinessLayer;
 using AutoReservation.Common.DataTransferObjects;
 using System.Collections.Generic;
+using System.ServiceModel;
+using AutoReservation.Dal;
 
 namespace AutoReservation.Service.Wcf
 {
@@ -35,14 +37,12 @@ namespace AutoReservation.Service.Wcf
             return instance.GetAuto(key).ConvertToDto();
             throw new NotImplementedException();
         }
-
         public ReservationDto GetReservation(int key)
         {
             WriteActualMethod();
             return instance.GetReservation(key).ConvertToDto();
             throw new NotImplementedException();
         }
-
         public KundeDto GetKunde(int key)
         {
             WriteActualMethod();
@@ -54,100 +54,102 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
             instance.AddAuto(auto.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
-
         public void AddReservation(ReservationDto reservation)
         {
             WriteActualMethod();
             instance.AddResevation(reservation.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
-
         public void AddKunde(KundeDto kunde)
         {
             WriteActualMethod();
             instance.AddKunde(kunde.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UpdateAuto(AutoDto modified, AutoDto original)
         {
             WriteActualMethod();
             instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
-
         public void UpdateReservation(ReservationDto modified, ReservationDto original)
         {
             WriteActualMethod();
             instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
-
         public void UpdateKunde(KundeDto modified, KundeDto original)
         {
             WriteActualMethod();
             instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void DeleteAuto(AutoDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteAuto(toDelete.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
-
         public void DeleteReservation(ReservationDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteReservation(toDelete.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
-
         public void DeleteKunde(KundeDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteKunde(toDelete.ConvertToEntity());
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
-
-        public List<AutoDto> Autos
+        public List<AutoDto> GetAutos()
         {
-            get
-            {
-                WriteActualMethod();
-                List<AutoDto> ret = new List<AutoDto>();
-                foreach (Dal.Auto auto in instance.GetAutos())
-                    ret.Add(auto.ConvertToDto());
-                return ret;
-            }          
+            WriteActualMethod();
+            List<Auto> autoTemp = instance.GetAutos();
+
+            List<AutoDto> autoList =new List<AutoDto>();
+            foreach (Auto auto in autoTemp){
+                Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
+                autoList.Add(DtoConverter.ConvertToDto(auto));
+            }
+            Console.WriteLine("AutoReservationService GetAutos Ende");
+            return autoList;
+            //return DtoConverter.ConvertToDtos(instance.GetAutos());
+                //List<AutoDto> ret = new List<AutoDto>();
+                //foreach (Dal.Auto auto in instance.GetAutos())
+                //    ret.Add(auto.ConvertToDto());
+                //return ret;
         }
 
-        public List<ReservationDto> Reservationen
+        public List<ReservationDto> GetReservationen()
         {
-            get
-            {
+            //get
+            //{
                 WriteActualMethod();
-                List<ReservationDto> ret = new List<ReservationDto>();
-                foreach (Dal.Reservation res in instance.GetReservations())
-                    ret.Add(res.ConvertToDto());
-                return ret;
-            }    
+                //List<ReservationDto> ret = new List<ReservationDto>();
+                //foreach (Dal.Reservation res in instance.GetReservations())
+                //    ret.Add(res.ConvertToDto());
+                //return ret;
+            //}    
+                return instance.GetReservations().ConvertToDtos();
         }
 
-        public System.Collections.Generic.List<KundeDto> Kunden
+        public List<KundeDto> GetKunden()
         {
-            get
-            {
+            //get
+            //{
                 WriteActualMethod();
-                List<KundeDto> ret = new List<KundeDto>();
-                foreach (Dal.Kunde kunde in instance.GetKunden())
-                    ret.Add(kunde.ConvertToDto());
-                return ret;
-            } 
+            //    List<KundeDto> ret = new List<KundeDto>();
+            //    foreach (Dal.Kunde kunde in instance.GetKunden())
+            //        ret.Add(kunde.ConvertToDto());
+            //    return ret;
+            //} 
+                return instance.GetKunden().ConvertToDtos();
         }
     }
     //Der Service-Layer ist in dieser einfachen 

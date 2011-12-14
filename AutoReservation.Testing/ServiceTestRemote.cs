@@ -1,12 +1,25 @@
 ﻿using System.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoReservation.Common.Interfaces;
+using AutoReservation.Service.Wcf;
 
 namespace AutoReservation.Testing
 {
     [TestClass]
     public class ServiceTestRemote : ServiceTestBase
     {
+
+        [ClassInitialize]
+        public static void Setup(TestContext context)
+        {
+            AutoReservationServiceHost.StartService();
+        }
+
+        [ClassCleanup]
+        public static void TearDown()
+        {
+            AutoReservationServiceHost.StopService();
+        }
 
         private IAutoReservationService target;
         protected override IAutoReservationService Target
@@ -22,5 +35,26 @@ namespace AutoReservation.Testing
             }
         }
 
+
+        internal class AutoReservationServiceHost
+        {
+            internal static ServiceHost myServiceHost;
+
+            internal static void StartService()
+            {
+                //Instantiate new ServiceHost 
+                myServiceHost = new ServiceHost(typeof(AutoReservationService));
+
+                //Open myServiceHost
+                myServiceHost.Open();
+            }
+
+            internal static void StopService()
+            {
+                //Call StopService from your shutdown logic (i.e. dispose method)
+                if (myServiceHost.State != CommunicationState.Closed)
+                    myServiceHost.Close();
+            }
+        }
     }
 }

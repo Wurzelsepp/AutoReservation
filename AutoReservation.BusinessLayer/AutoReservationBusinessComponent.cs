@@ -1,139 +1,241 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AutoReservation.Dal;
 using System.Data;
+using System.Collections.Generic;
 
 namespace AutoReservation.BusinessLayer
 {
     public class AutoReservationBusinessComponent
     {
-        AutoReservationEntities context;
-
-        public AutoReservationBusinessComponent()
-        {
-            context = new AutoReservationEntities();
-        }
-
         // Autos
         public void AddAuto(Auto auto)
         {
-            context.AddToAutos(auto);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                context.AddToAutos(auto);
+            }
         }
         public void EditAuto(Auto autoOriginal, Auto autoModified)
         {
-            try
+            using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                context.Autos.Attach(autoOriginal);
-                context.Autos.ApplyCurrentValues(autoModified);
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+                try
+                {
+                    //Console.WriteLine("arbc_editauto_Attach");
+                    context.Autos.Attach(autoOriginal);
+                    //Console.WriteLine("arbc_editauto_apllycurrentvalues");
+                    context.Autos.ApplyCurrentValues(autoModified);
+                    //Console.WriteLine("arbc_editauto_execute");
+                    context.Autos.Execute(System.Data.Objects.MergeOption.PreserveChanges);
+                    //Console.WriteLine("arbc_editauto_changeobjectstate");
+                    //context.ObjectStateManager.ChangeObjectState(autoOriginal, EntityState.Modified);
+                    //Console.WriteLine("arbc_editauto_acceptallchanges");
+                    context.AcceptAllChanges();
+                    //Console.WriteLine("arbc_editauto_savechanges");
+                    context.SaveChanges();
+                    //Console.WriteLine("arbc_editauto_detach");
+                    //context.Autos.Detach(autoModified);
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+                }
             }
         }
         public void DeleteAuto(Auto autoDelete)
         {
-            try
+            using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                context.Autos.Attach(autoDelete);
-                context.Autos.DeleteObject(autoDelete);
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+                try
+                {
+                    context.Autos.Attach(autoDelete);
+                    context.DeleteObject(autoDelete);
+                    context.SaveChanges();
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+                }
             }
         }
-
         public Auto GetAuto(int key)
         {
-            return context.Autos.ElementAt(key);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                var result = from auto in context.Autos
+                             where auto.Id == key
+                             select auto;
+                return result.FirstOrDefault();
+            }
         }
-
         public List<Auto> GetAutos()
         {
-            return context.Autos.ToList<Auto>();
+            //Console.WriteLine("AutoReservationBusinessComponent Anfang");
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                //Console.WriteLine("AutoReservationBusinessComponent Linq");
+                var result = from auto in context.Autos
+                             select auto;
+                return result.ToList();
+                //List<Auto> res = new List<Auto>();
+
+                //Console.WriteLine("AutoReservationBusinessComponent foreach");
+                //foreach (Auto auto in result)
+                //{
+                    //Console.WriteLine("AutoReservationBusinessComponent Auto.Marke: " + auto.Marke);
+                    //res.Add(auto);
+                //}
+                //Console.WriteLine("AutoReservationBusinessComponent Ende");
+                //return res;
+            }
+
+            //return context.Autos.ToList<Auto>();
         }
 
         // Reservationen
         public void AddResevation(Reservation reservation)
         {
-            context.AddToReservationen(reservation);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                context.AddToReservationen(reservation);
+            }
         }
         public void EditReservation(Reservation reservationOriginal, Reservation reservationModified)
         {
-            try
+            using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                context.Reservationen.Attach(reservationOriginal);
-                context.Reservationen.ApplyCurrentValues(reservationModified);
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+                try
+                {
+                    context.Reservationen.Attach(reservationOriginal);
+                    context.Reservationen.ApplyCurrentValues(reservationModified);
+                    context.Reservationen.Execute(System.Data.Objects.MergeOption.PreserveChanges);
+                    context.AcceptAllChanges();
+                    context.SaveChanges();
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+                }
             }
         }
         public void DeleteReservation(Reservation reservationDelete)
         {
-            try
+            using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                context.Reservationen.Attach(reservationDelete);
-                context.Reservationen.DeleteObject(reservationDelete);
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+                try
+                {
+                    context.Reservationen.Attach(reservationDelete);
+                    context.DeleteObject(reservationDelete);
+                    context.SaveChanges();
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+                }
             }
         }
-
         public Reservation GetReservation(int key)
         {
-            return (Reservation)context.Reservationen.ElementAt(key);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                var result = from reservation in context.Reservationen
+                             where reservation.ReservationsNr == key
+                             select reservation;
+                return result.FirstOrDefault();
+            }
         }
-
         public List<Reservation> GetReservations()
         {
-            return context.Reservationen.ToList<Reservation>();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                //Hier werden nicht alle reservationen zurückgegeben
+                var result = from reservation in context.Reservationen
+                             select reservation;
+
+                //Test output begin
+                Reservation test = (Reservation)result.FirstOrDefault();
+                //Console.WriteLine("AutoReservationBusinessComponent Resultate GetReservation:");
+
+                //Console.WriteLine("AutoId:" +test.AutoId );
+                //Console.WriteLine("reservation auto ref: " + test.AutoReference);
+                //Console.WriteLine("reservation auto Id: " + test.Auto.Id);
+                //Console.WriteLine("reservation auto marke: " + test.Auto.Marke);
+                //Console.WriteLine("reservation auto tagestarif: " + test.Auto.Tagestarif);
+
+                //Console.WriteLine("reservation kunde ref: " + test.KundeReference);
+                //Console.WriteLine("reservation kunde id: " + test.Kunde.Id);
+                //Console.WriteLine("reservation kunde nachn: " + test.Kunde.Nachname);
+                //Console.WriteLine("reservation kunde vorn: " + test.Kunde.Vorname);
+                //Console.WriteLine("reservation kunde geb: " + test.Kunde.Geburtsdatum);
+                //Test output end
+
+                return result.ToList();
+            }
         }
 
         // Kunden
         public void AddKunde(Kunde kunde)
         {
-            context.AddToKunden(kunde);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                context.AddToKunden(kunde);
+            }
         }
         public void EditKunde(Kunde kundeOriginal, Kunde kundeModified)
         {
-            try
+            using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                context.Kunden.Attach(kundeOriginal);
-                context.Kunden.ApplyCurrentValues(kundeModified);
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+                try
+                {
+                    context.Kunden.Attach(kundeOriginal);
+                    context.Kunden.ApplyCurrentValues(kundeModified);
+                    context.Kunden.Execute(System.Data.Objects.MergeOption.PreserveChanges);
+                    context.AcceptAllChanges();
+                    context.SaveChanges();
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+                }
             }
         }
         public void DeleteKunde(Kunde kundeDelete)
         {
-            try
+            using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                context.Kunden.Attach(kundeDelete);
-                context.Kunden.DeleteObject(kundeDelete);
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+                try
+                {
+                    context.Kunden.Attach(kundeDelete);
+                    context.DeleteObject(kundeDelete);
+                    context.SaveChanges();
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+                }
             }
         }
-
         public Kunde GetKunde(int key)
         {
-            return (Kunde)context.Kunden.ElementAt(key);
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                var result = from kunde in context.Kunden
+                             where kunde.Id == key
+                             select kunde;
+                return result.FirstOrDefault();
+            }
         }
-
         public List<Kunde> GetKunden()
         {
-            return context.Kunden.ToList<Kunde>();
+            using (AutoReservationEntities context = new AutoReservationEntities())
+            {
+                var result = from kunde in context.Kunden
+                             select kunde;
+                return result.ToList();
+            }
+
+            //return context.Kunden.ToList<Kunde>();
         }
     }
 }

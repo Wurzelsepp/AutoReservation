@@ -6,11 +6,11 @@ namespace AutoReservation.Common.DataTransferObjects
     [DataContract]
     public class AutoDto : DtoBase
     {
-        private string marke;
-        private int id;
-        private int basistarif;
-        private int tagestarif;
-        private AutoKlasse autoKlasse;
+        [DataMember]private string marke;
+        [DataMember]private int id;
+        [DataMember]private int basistarif;
+        [DataMember]private int tagestarif;
+        [DataMember]private AutoKlasse autoKlasse;
 
         public AutoKlasse AutoKlasse { get { return autoKlasse; } set {
             if (autoKlasse != value)
