@@ -71,11 +71,23 @@ namespace AutoReservation.BusinessLayer
         }
         public List<Auto> GetAutos()
         {
+            //Console.WriteLine("AutoReservationBusinessComponent Anfang");
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
+                //Console.WriteLine("AutoReservationBusinessComponent Linq");
                 var result = from auto in context.Autos
                              select auto;
                 return result.ToList();
+                //List<Auto> res = new List<Auto>();
+
+                //Console.WriteLine("AutoReservationBusinessComponent foreach");
+                //foreach (Auto auto in result)
+                //{
+                    //Console.WriteLine("AutoReservationBusinessComponent Auto.Marke: " + auto.Marke);
+                    //res.Add(auto);
+                //}
+                //Console.WriteLine("AutoReservationBusinessComponent Ende");
+                //return res;
             }
 
             //return context.Autos.ToList<Auto>();

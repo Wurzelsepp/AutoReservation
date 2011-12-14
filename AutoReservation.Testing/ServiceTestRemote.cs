@@ -10,7 +10,7 @@ namespace AutoReservation.Testing
     {
 
         [ClassInitialize]
-        public static void Setup()
+        public static void Setup(TestContext context)
         {
             AutoReservationServiceHost.StartService();
         }
@@ -34,26 +34,27 @@ namespace AutoReservation.Testing
                 return target;
             }
         }
-    }
-    
-    internal class AutoReservationServiceHost
-    {
-        internal static ServiceHost myServiceHost;
 
-        internal static void StartService()
+
+        internal class AutoReservationServiceHost
         {
-            //Instantiate new ServiceHost 
-            myServiceHost = new ServiceHost(typeof(AutoReservationService));
+            internal static ServiceHost myServiceHost;
 
-            //Open myServiceHost
-            myServiceHost.Open();
-        }
+            internal static void StartService()
+            {
+                //Instantiate new ServiceHost 
+                myServiceHost = new ServiceHost(typeof(AutoReservationService));
 
-        internal static void StopService()
-        {
-            //Call StopService from your shutdown logic (i.e. dispose method)
-            if (myServiceHost.State != CommunicationState.Closed)
-                myServiceHost.Close();
+                //Open myServiceHost
+                myServiceHost.Open();
+            }
+
+            internal static void StopService()
+            {
+                //Call StopService from your shutdown logic (i.e. dispose method)
+                if (myServiceHost.State != CommunicationState.Closed)
+                    myServiceHost.Close();
+            }
         }
     }
 }

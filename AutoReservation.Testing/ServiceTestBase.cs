@@ -28,7 +28,12 @@ namespace AutoReservation.Testing
 
             IAutoReservationService ars = Target;
 
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+            //Console.WriteLine("ServiceTestBase Vor GetAutos");
+            
+            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.GetAutos());
+            //Console.WriteLine("ServiceTestBase Marke: "+autoList[0].Marke);
+            //Console.WriteLine("ServiceTestBase Nach GetAutos");
+
             foreach (Auto auto in autoList){
                 //Console.WriteLine("Auto: " + auto.Marke);
                 Auto found = autoListTestData.Find(delegate(Auto a) { return a.Marke == auto.Marke; });
@@ -46,7 +51,7 @@ namespace AutoReservation.Testing
 
             IAutoReservationService ars = Target;
 
-            List<Kunde> kundenList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> kundenList = ars.GetKunden().ConvertToEntities();
             foreach (Kunde kunde in kundenList)
             {
                 Kunde found = kundenListTestData.Find(delegate(Kunde k) { return k.Nachname == kunde.Nachname; });
@@ -69,13 +74,13 @@ namespace AutoReservation.Testing
                 IAutoReservationService ars = Target;
                 
                 //Console.WriteLine("###reservationList abfüllen");
-                List<Reservation> reservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+                List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
 
                 //Console.WriteLine("###autoList abfüllen");
-                List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+                List<Auto> autoList = ars.GetAutos().ConvertToEntities();
 
                 //Console.WriteLine("###kundenList abfüllen");
-                List<Kunde> kundenList= DtoConverter.ConvertToEntities(ars.Kunden);
+                List<Kunde> kundenList= ars.GetKunden().ConvertToEntities();
 
                 //Console.WriteLine("###foreach Reservation");
                 foreach (Reservation reservation in reservationList)
@@ -127,7 +132,7 @@ namespace AutoReservation.Testing
 
             IAutoReservationService ars = Target;
 
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
             foreach (Auto auto in autoList)
             {
                 Auto found = DtoConverter.ConvertToEntity(ars.GetAuto(auto.Id));
@@ -145,7 +150,7 @@ namespace AutoReservation.Testing
 
             IAutoReservationService ars = Target;
 
-            List<Kunde> kundeList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
             foreach (Kunde kunde in kundeList)
             {
                 Kunde found = DtoConverter.ConvertToEntity(ars.GetKunde(kunde.Id));
@@ -163,7 +168,7 @@ namespace AutoReservation.Testing
 
             IAutoReservationService ars = Target;
 
-            List<Reservation> reservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
             foreach (Reservation reservation in reservationList)
             {
                 Reservation found = DtoConverter.ConvertToEntity(ars.GetReservation(reservation.ReservationsNr));
@@ -181,7 +186,7 @@ namespace AutoReservation.Testing
 
             IAutoReservationService ars = Target;
 
-            List<Reservation> reservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
             foreach (Reservation reservation in reservationList)
             {
                 Assert.IsNull(ars.GetReservation(reservation.ReservationsNr+10));
@@ -204,7 +209,7 @@ namespace AutoReservation.Testing
 
             ars.AddAuto(DtoConverter.ConvertToDto(addtest));
 
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
             foreach (Auto auto in autoList)
             {
                 if (auto.Marke == addtest.Marke)
@@ -230,7 +235,7 @@ namespace AutoReservation.Testing
 
             ars.AddKunde(DtoConverter.ConvertToDto(addtest));
 
-            List<Kunde> kundeList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
             foreach (Kunde kunde in kundeList)
             {
                 if (kunde.Nachname == addtest.Nachname)
@@ -253,12 +258,12 @@ namespace AutoReservation.Testing
             addtest.Von = new DateTime(2020, 1, 10);
             addtest.Bis = new DateTime(2020, 1, 20);
 
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
             foreach (Auto auto in autoList)
             {
                 addtest.AutoId = auto.Id;
             }
-            List<Kunde> kundeList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
             foreach (Kunde kunde in kundeList)
             {
                 addtest.KundeId = kunde.Id;
@@ -266,7 +271,7 @@ namespace AutoReservation.Testing
 
             ars.AddReservation(DtoConverter.ConvertToDto(addtest));
 
-            List<Reservation> reservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
             foreach (Reservation reservation in reservationList)
             {
                 if (reservation.AutoId == addtest.AutoId && reservation.KundeId==addtest.KundeId)
@@ -297,7 +302,7 @@ namespace AutoReservation.Testing
 
             ars.UpdateAuto(DtoConverter.ConvertToDto(updatetest),DtoConverter.ConvertToDto(updateOriginal));
 
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
             foreach (Auto auto in autoList)
             {
                 if (auto.Marke == updatetest.Marke)
@@ -328,7 +333,7 @@ namespace AutoReservation.Testing
 
             ars.UpdateKunde(DtoConverter.ConvertToDto(updateTest), DtoConverter.ConvertToDto(updateOriginal));
 
-            List<Kunde> kundeList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
             foreach (Kunde kunde in kundeList)
             {
                 if (kunde.Nachname == updateTest.Nachname)
@@ -351,13 +356,13 @@ namespace AutoReservation.Testing
             IAutoReservationService ars = Target;
 
             Reservation updateOriginal = new Reservation();
-            List<Reservation> reservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
             foreach (Reservation reservation in reservationList)
             {
                 updateOriginal = reservation;
             }
 
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
             foreach (Auto auto in autoList)
             {
                 if (auto.Id != updateOriginal.AutoId)
@@ -367,7 +372,7 @@ namespace AutoReservation.Testing
                     updateAutoId = auto.Id;
                 }
             }
-            List<Kunde> kundeList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
             foreach (Kunde kunde in kundeList)
             {
                 if (kunde.Id != updateOriginal.KundeId)
@@ -402,7 +407,7 @@ namespace AutoReservation.Testing
             }
         }
 
-        //Autos Kunden Reservationen: Updates mit Optimistic Concurrency Verletzung 
+        //Autos Kunden Reservationen: Updates mit Optimistic Concurrency Verletzung
         //#########################################################################
         [TestMethod]
         public void UpdateAutoTestWithOptimisticConcurrency()
@@ -434,11 +439,11 @@ namespace AutoReservation.Testing
             List<Kunde> kundeListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
 
             IAutoReservationService ars = Target;
-            List<Kunde> originalKundenList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> originalKundenList = ars.GetKunden().ConvertToEntities();
             Kunde deleteTest = originalKundenList[1];
             
             ars.DeleteKunde(DtoConverter.ConvertToDto(deleteTest));
-            List<Kunde> modifiedKundenList = DtoConverter.ConvertToEntities(ars.Kunden);
+            List<Kunde> modifiedKundenList = ars.GetKunden().ConvertToEntities();
 
             Assert.AreNotEqual(originalKundenList, modifiedKundenList);
         }
@@ -450,7 +455,7 @@ namespace AutoReservation.Testing
             List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
 
             IAutoReservationService ars = Target;
-            List<Auto> originalAutoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> originalAutoList = ars.GetAutos().ConvertToEntities();
             Auto deleteTest = originalAutoList[1];
             //Console.WriteLine("delAuto.id :" + deleteTest.Id);
             //Console.WriteLine("delAuto.marke: " + deleteTest.Marke);
@@ -458,7 +463,7 @@ namespace AutoReservation.Testing
             //Console.WriteLine("delAuto.reservation: " + deleteTest.Reservation);
 
             ars.DeleteAuto(DtoConverter.ConvertToDto(deleteTest));
-            List<Auto> modifiedAutoList = DtoConverter.ConvertToEntities(ars.Autos);
+            List<Auto> modifiedAutoList = ars.GetAutos().ConvertToEntities();
 
             //foreach (Auto auto in modifiedAutoList)
             //{
@@ -478,11 +483,11 @@ namespace AutoReservation.Testing
             List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
 
             IAutoReservationService ars = Target;
-            List<Reservation> originalReservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+            List<Reservation> originalReservationList = ars.GetReservationen().ConvertToEntities();
             Reservation deleteTest = originalReservationList[0];
 
             ars.DeleteReservation(DtoConverter.ConvertToDto(deleteTest));
-            List<Reservation> modifiedReservationList = DtoConverter.ConvertToEntities(ars.Reservationen);
+            List<Reservation> modifiedReservationList = ars.GetReservationen().ConvertToEntities();
 
             Assert.AreNotEqual(originalReservationList, modifiedReservationList);
         }

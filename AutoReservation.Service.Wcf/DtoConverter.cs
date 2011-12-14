@@ -166,6 +166,4 @@ namespace AutoReservation.Service.Wcf
             return target;
         }
     }
-
- 
 }
