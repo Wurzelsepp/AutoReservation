@@ -63,7 +63,7 @@ namespace AutoReservation.Ui.ViewModels
         {
             Reservationen.Clear();
             reservationenOriginal.Clear();
-            foreach (ReservationDto reservation in Service.Reservationen)
+            foreach (ReservationDto reservation in Service.GetReservationen())
             {
                 Reservationen.Add(reservation);
                 reservationenOriginal.Add((ReservationDto)reservation.Clone());

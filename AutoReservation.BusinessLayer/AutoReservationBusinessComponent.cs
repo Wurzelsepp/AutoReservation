@@ -139,38 +139,40 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                var result = from reservation in context.Reservationen
-                             where reservation.ReservationsNr == key
-                             select reservation;
-                return result.FirstOrDefault();
+                //var result = from reservation in context.Reservationen
+                //             where reservation.ReservationsNr == key
+                //             select reservation;
+                //return result.FirstOrDefault();
+                return context.Reservationen.Include("Auto").Include("Kunde").Where(a => a.ReservationsNr == key).FirstOrDefault();
             }
         }
         public List<Reservation> GetReservations()
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                //Hier werden nicht alle reservationen zurückgegeben
-                var result = from reservation in context.Reservationen
-                             select reservation;
+                ////Hier werden nicht alle reservationen zurückgegeben
+                //var result = from reservation in context.Reservationen
+                //             select reservation;
 
-                //Test output begin
-                Reservation test = (Reservation)result.FirstOrDefault();
-                //Console.WriteLine("AutoReservationBusinessComponent Resultate GetReservation:");
+                ////Test output begin
+                ////Reservation test = (Reservation)result.FirstOrDefault();
+                ////Console.WriteLine("AutoReservationBusinessComponent Resultate GetReservation:");
 
-                //Console.WriteLine("AutoId:" +test.AutoId );
-                //Console.WriteLine("reservation auto ref: " + test.AutoReference);
-                //Console.WriteLine("reservation auto Id: " + test.Auto.Id);
-                //Console.WriteLine("reservation auto marke: " + test.Auto.Marke);
-                //Console.WriteLine("reservation auto tagestarif: " + test.Auto.Tagestarif);
+                ////Console.WriteLine("AutoId:" +test.AutoId );
+                ////Console.WriteLine("reservation auto ref: " + test.AutoReference);
+                ////Console.WriteLine("reservation auto Id: " + test.Auto.Id);
+                ////Console.WriteLine("reservation auto marke: " + test.Auto.Marke);
+                ////Console.WriteLine("reservation auto tagestarif: " + test.Auto.Tagestarif);
 
-                //Console.WriteLine("reservation kunde ref: " + test.KundeReference);
-                //Console.WriteLine("reservation kunde id: " + test.Kunde.Id);
-                //Console.WriteLine("reservation kunde nachn: " + test.Kunde.Nachname);
-                //Console.WriteLine("reservation kunde vorn: " + test.Kunde.Vorname);
-                //Console.WriteLine("reservation kunde geb: " + test.Kunde.Geburtsdatum);
-                //Test output end
+                ////Console.WriteLine("reservation kunde ref: " + test.KundeReference);
+                ////Console.WriteLine("reservation kunde id: " + test.Kunde.Id);
+                ////Console.WriteLine("reservation kunde nachn: " + test.Kunde.Nachname);
+                ////Console.WriteLine("reservation kunde vorn: " + test.Kunde.Vorname);
+                ////Console.WriteLine("reservation kunde geb: " + test.Kunde.Geburtsdatum);
+                ////Test output end
 
-                return result.ToList();
+                //return result.ToList();
+                return context.Reservationen.Include("Auto").Include("Kunde").ToList();
             }
         }
 
