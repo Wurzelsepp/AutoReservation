@@ -1,54 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using AutoReservation.Common.DataTransferObjects;
 using System.ServiceModel;
-using System.Runtime.Serialization;
 
 namespace AutoReservation.Common.Interfaces
 {
-    [ServiceContractAttribute(Namespace = "http://localhost:7876/AutoReservationService")]
+    [ServiceContract]
     public interface IAutoReservationService
     {
         //Eine Entität anhand des Primärschlüssels lesen
-        [OperationContract()]
+        [OperationContract]
         AutoDto GetAuto(int key);
-        [OperationContract()]
+        [OperationContract]
         ReservationDto GetReservation(int key);
-        [OperationContract()]
+        [OperationContract]
         KundeDto GetKunde(int key);
 
         //Einfügen 
-        [OperationContract()]
+        [OperationContract]
         void AddAuto(AutoDto auto);
-        [OperationContract()]
+        [OperationContract]
         void AddReservation(ReservationDto reservation);
-        [OperationContract()]
+        [OperationContract]
         void AddKunde(KundeDto kunde);
 
         //Update 
-        [OperationContract()]
+        [OperationContract]
+        [FaultContract(typeof(AutoDto))]
         void UpdateAuto(AutoDto modified, AutoDto original);
-        [OperationContract()]
+        [OperationContract]
+        [FaultContract(typeof(ReservationDto))]
         void UpdateReservation(ReservationDto modified, ReservationDto original);
-        [OperationContract()]
+        [OperationContract]
+        [FaultContract(typeof(KundeDto))]
         void UpdateKunde(KundeDto modified, KundeDto original);
 
         //Löschen 
-        [OperationContract()]
+        [OperationContract]
         void DeleteAuto(AutoDto toDelete);
-        [OperationContract()]
+        [OperationContract]
         void DeleteReservation(ReservationDto toDelete);
-        [OperationContract()]
+        [OperationContract]
         void DeleteKunde(KundeDto toDelete);
 
         //Collections lesen
-        [OperationContract()]
+        [OperationContract]
         List<AutoDto> GetAutos();
-        [OperationContract()]
+        [OperationContract]
         List<ReservationDto> GetReservationen();
-        [OperationContract()]
+        [OperationContract]
         List<KundeDto> GetKunden();
 
     }

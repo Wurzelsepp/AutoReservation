@@ -72,20 +72,44 @@ namespace AutoReservation.Service.Wcf
         public void UpdateAuto(AutoDto modified, AutoDto original)
         {
             WriteActualMethod();
-            instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
-            //throw new NotImplementedException();
+            try
+            {
+                instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
+            }
+            catch (LocalOptimisticConcurrencyException<Auto> ex)
+            {
+                Console.WriteLine("AutoReservationService: updateauto");
+                //throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
+                throw new FaultException<AutoDto>(ex.Entity.ConvertToDto(), ex.Message);
+            }
         }
         public void UpdateReservation(ReservationDto modified, ReservationDto original)
         {
             WriteActualMethod();
-            instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
-            //throw new NotImplementedException();
+            try
+            {
+                instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
+            }
+            catch (LocalOptimisticConcurrencyException<Reservation> ex)
+            {
+                Console.WriteLine("AutoReservationService: updatereservation");
+                //throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
+                throw new FaultException<ReservationDto>(ex.Entity.ConvertToDto(), ex.Message);
+            }
         }
         public void UpdateKunde(KundeDto modified, KundeDto original)
         {
             WriteActualMethod();
-            instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
-            //throw new NotImplementedException();
+            try
+            {
+                instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
+            }
+            catch (LocalOptimisticConcurrencyException<Kunde> ex)
+            {
+                Console.WriteLine("AutoReservationService: updatekunde");
+                //throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
+                throw new FaultException<KundeDto>(ex.Entity.ConvertToDto(), ex.Message);
+            }
         }
 
         public void DeleteAuto(AutoDto toDelete)
@@ -114,10 +138,10 @@ namespace AutoReservation.Service.Wcf
 
             List<AutoDto> autoList =new List<AutoDto>();
             foreach (Auto auto in autoTemp){
-                Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
+                //Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
                 autoList.Add(DtoConverter.ConvertToDto(auto));
             }
-            Console.WriteLine("AutoReservationService GetAutos Ende");
+            //Console.WriteLine("AutoReservationService GetAutos Ende");
             return autoList;
             //return DtoConverter.ConvertToDtos(instance.GetAutos());
                 //List<AutoDto> ret = new List<AutoDto>();
@@ -125,7 +149,6 @@ namespace AutoReservation.Service.Wcf
                 //    ret.Add(auto.ConvertToDto());
                 //return ret;
         }
-
         public List<ReservationDto> GetReservationen()
         {
             //get
@@ -138,7 +161,6 @@ namespace AutoReservation.Service.Wcf
             //}    
                 return instance.GetReservations().ConvertToDtos();
         }
-
         public List<KundeDto> GetKunden()
         {
             //get

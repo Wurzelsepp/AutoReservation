@@ -5,6 +5,8 @@ using AutoReservation.BusinessLayer;
 using System;
 using AutoReservation.Service.Wcf;
 using System.Collections.Generic;
+using System.Data;
+using AutoReservation.Common.DataTransferObjects;
 
 namespace AutoReservation.Testing
 {
@@ -16,126 +18,124 @@ namespace AutoReservation.Testing
         //##########################
         //noch nicht implementiert
         //Updaten => sehe hier noch nicht den Unterschied zu Updates
-        //Updates mit Concurrency Exception => versteh ich nicht wirklich??
+        //Updates mit Concurrency Exception => Exception wird nur im Remotefall nicht richtig durchs Interface weitergereicht
 
-        //Autos Kunden Reservationen: Abfragen einer Liste 
-        //################################################
+        #region Abfragen einer Liste
         [TestMethod]
         public void AutosTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
+            //List<AutoDto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData().ConvertToDtos();
 
             IAutoReservationService ars = Target;
 
             //Console.WriteLine("ServiceTestBase Vor GetAutos");
-            
-            List<Auto> autoList = DtoConverter.ConvertToEntities(ars.GetAutos());
-            //Console.WriteLine("ServiceTestBase Marke: "+autoList[0].Marke);
+
+            List<AutoDto> autoList = ars.GetAutos();
+            //Console.WriteLine("ServiceTestBase Marke: " + autoList[0].Marke);
             //Console.WriteLine("ServiceTestBase Nach GetAutos");
 
-            foreach (Auto auto in autoList){
-                //Console.WriteLine("Auto: " + auto.Marke);
-                Auto found = autoListTestData.Find(delegate(Auto a) { return a.Marke == auto.Marke; });
+            //foreach (AutoDto auto in autoList)
+            //{
+            //    Console.WriteLine("Auto: " + auto.Marke);
+            //    AutoDto found = autoListTestData.Find(delegate(AutoDto a) { return a.Marke == auto.Marke; });
 
-                //Console.WriteLine("Das wurde gefunden: "+ found.Marke);
-                Assert.AreEqual(auto.Marke, found.Marke, auto.Marke + " wurde nicht gefunden.");
-            }
+            //    Console.WriteLine("Das wurde gefunden: " + found.Marke);
+            Assert.AreEqual(3, autoList.Count);
+            //}
         }
 
         [TestMethod]
         public void KundenTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Kunde> kundenListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
+            //List<KundeDto> kundenListTestData = TestEnvironmentHelper.InitializeKundenListTestData().ConvertToDtos();
 
             IAutoReservationService ars = Target;
 
-            List<Kunde> kundenList = ars.GetKunden().ConvertToEntities();
-            foreach (Kunde kunde in kundenList)
-            {
-                Kunde found = kundenListTestData.Find(delegate(Kunde k) { return k.Nachname == kunde.Nachname; });
-                Assert.AreEqual(kunde.Nachname, found.Nachname, kunde.Nachname + " wurde nicht gefunden.");
-            }
+            List<KundeDto> kundenList = ars.GetKunden();
+            //foreach (KundeDto kunde in kundenList)
+            //{
+                //KundeDto found = kundenListTestData.Find(delegate(KundeDto k) { return k.Nachname == kunde.Nachname; });
+                Assert.AreEqual(4, kundenList.Count);
+            //}
         }
 
         [TestMethod]
         public void ReservationenTest()
         {
-            using (AutoReservationEntities context = new AutoReservationEntities())
-            {
-                TestEnvironmentHelper.InitializeTestData();
-                List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
-                List<Kunde> kundenListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
-                List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
-                Auto foundAuto=null;
-                Kunde foundKunde=null;
-                Reservation found = null;
-                IAutoReservationService ars = Target;
+
+            TestEnvironmentHelper.InitializeTestData();
+            //    List<ReservationDto> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData().ConvertToDtos();
+            //    List<KundeDto> kundenListTestData = TestEnvironmentHelper.InitializeKundenListTestData().ConvertToDtos();
+            //    List<AutoDto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData().ConvertToDtos();
+
+            //AutoDto foundAuto=null;
+            //    KundeDto foundKunde=null;
+            //    ReservationDto found = null;
+                
+            IAutoReservationService ars = Target;
                 
                 //Console.WriteLine("###reservationList abfüllen");
-                List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
+            List<ReservationDto> reservationList = ars.GetReservationen();
 
                 //Console.WriteLine("###autoList abfüllen");
-                List<Auto> autoList = ars.GetAutos().ConvertToEntities();
+                //List<AutoDto> autoList = ars.GetAutos();
 
                 //Console.WriteLine("###kundenList abfüllen");
-                List<Kunde> kundenList= ars.GetKunden().ConvertToEntities();
+                //List<KundeDto> kundenList= ars.GetKunden();
 
                 //Console.WriteLine("###foreach Reservation");
-                foreach (Reservation reservation in reservationList)
-                {
+                //foreach (ReservationDto reservation in reservationList)
+                //{
                     //Console.WriteLine("###foreach Reservation suche von reservation." + reservation.ReservationsNr);
-                    found = reservationListTestData.Find(delegate(Reservation r) { return r.Von == reservation.Von; });
+                    //found = reservationListTestData.Find(delegate(ReservationDto r) { return r.Von == reservation.Von; });
 
                     //Console.WriteLine("###foreach Auto suche von reservation.auto.id: " + reservation.AutoId);                    
-                    foreach (Auto auto in autoList)
-                    {
-                        if (auto.Id == reservation.AutoId)
-                        {
+                    //foreach (AutoDto auto in autoList)
+                    //{
+                    //    if (auto.Id == reservation.Auto.Id)
+                    //    {
                             //Console.WriteLine("AutoId: " + auto.Id);
                             //Console.WriteLine("AutoMarke: " + auto.Marke);
-                            foundAuto = autoListTestData.Find(delegate(Auto a) { return a.Marke == auto.Marke; });
-                        }
-                    }
+                            //foundAuto = autoListTestData.Find(delegate(AutoDto a) { return a.Marke == auto.Marke; });
+                        //}
+                    //}
 
                     //Console.WriteLine("###foreach Kunde suche von reservation.kunde.id: " + reservation.KundeId);
-                    foreach (Kunde kunde in kundenList)
-                    {
-                        if (kunde.Id == reservation.KundeId)
-                        {
+                    //foreach (KundeDto kunde in kundenList)
+                    //{
+                    //    if (kunde.Id == reservation.Kunde.Id)
+                    //    {
                             //Console.WriteLine("KundeId: " + kunde.Id);
                             //Console.WriteLine("KundeNachname: " + kunde.Nachname);
-                            foundKunde = kundenListTestData.Find(delegate(Kunde k) { return k.Nachname == kunde.Nachname; });
-                        }
-                    }
+                            //foundKunde = kundenListTestData.Find(delegate(KundeDto k) { return k.Nachname == kunde.Nachname; });
+                        //}
+                    //}
 
                     //Console.WriteLine("Found Reservation: " + (found != null));
                     //Console.WriteLine("AutoId "+ reservation.AutoId + " Found Auto: " + (foundAuto != null));
                     //Console.WriteLine("KundeId " + reservation.KundeId + " Found Kunde: " + (foundKunde != null));
 
-                    Assert.IsTrue(found != null, "Reservation mit der Nr.: " + reservation.ReservationsNr + " wurde nicht gefunden.");
-                    Assert.IsTrue(foundKunde != null, "Zugehöriger Kunde wurde nicht gefunden.");
-                    Assert.IsTrue(foundAuto != null, "Zugehöriges Auto wurde nicht gefunden.");
+                    //Assert.IsTrue(found != null, "Reservation mit der Nr.: " + reservation.ReservationNr + " wurde nicht gefunden.");
+                    //Assert.IsTrue(foundKunde != null, "Zugehöriger Kunde wurde nicht gefunden.");
+                    //Assert.IsTrue(foundAuto != null, "Zugehöriges Auto wurde nicht gefunden.");
+            Assert.AreEqual(1, reservationList.Count);
                     //Console.WriteLine("###foreach Reservation Ende");
-                }
-            }
+            //}
         }
-
-        //Autos Kunden Reservationen: Suche anhand des Primärschlüssels
-        //#############################################################
+        #endregion Abfragen einer Liste
+        #region Suche anhand des Primärschlüssels
         [TestMethod]
         public void GetAutoByIdTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
-
             IAutoReservationService ars = Target;
 
-            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
-            foreach (Auto auto in autoList)
+            List<AutoDto> autoList = ars.GetAutos();
+            foreach (AutoDto auto in autoList)
             {
-                Auto found = DtoConverter.ConvertToEntity(ars.GetAuto(auto.Id));
+                AutoDto found = ars.GetAuto(auto.Id);
 
                 //Console.WriteLine("Das wurde gefunden: " + found.Id);
                 Assert.AreEqual(auto.Id, found.Id, auto.Id + " wurde nicht gefunden.");
@@ -146,14 +146,12 @@ namespace AutoReservation.Testing
         public void GetKundeByIdTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Kunde> kundeListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
-
             IAutoReservationService ars = Target;
 
-            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
-            foreach (Kunde kunde in kundeList)
+            List<KundeDto> kundeList = ars.GetKunden();
+            foreach (KundeDto kunde in kundeList)
             {
-                Kunde found = DtoConverter.ConvertToEntity(ars.GetKunde(kunde.Id));
+                KundeDto found = ars.GetKunde(kunde.Id);
 
                 //Console.WriteLine("Das wurde gefunden: " + found.Id);
                 Assert.AreEqual(kunde.Id, found.Id, kunde.Id+ " wurde nicht gefunden.");
@@ -164,17 +162,15 @@ namespace AutoReservation.Testing
         public void GetReservationByNrTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
-
             IAutoReservationService ars = Target;
 
-            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
-            foreach (Reservation reservation in reservationList)
+            List<ReservationDto> reservationList = ars.GetReservationen();
+            foreach (ReservationDto reservation in reservationList)
             {
-                Reservation found = DtoConverter.ConvertToEntity(ars.GetReservation(reservation.ReservationsNr));
+                ReservationDto found = ars.GetReservation(reservation.ReservationNr);
 
-                Console.WriteLine("Das wurde gefunden: " + found.ReservationsNr);
-                Assert.AreEqual(reservation.ReservationsNr, found.ReservationsNr, reservation.ReservationsNr + " wurde nicht gefunden.");
+                //Console.WriteLine("Das wurde gefunden: " + found.ReservationNr);
+                Assert.AreEqual(reservation.ReservationNr, found.ReservationNr, reservation.ReservationNr + " wurde nicht gefunden.");
             }
         }
 
@@ -182,163 +178,110 @@ namespace AutoReservation.Testing
         public void GetReservationByIllegalNr()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
-
             IAutoReservationService ars = Target;
 
-            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
-            foreach (Reservation reservation in reservationList)
+            List<ReservationDto> reservationList = ars.GetReservationen();
+            foreach (ReservationDto reservation in reservationList)
             {
-                Assert.IsNull(ars.GetReservation(reservation.ReservationsNr+10));
+                Assert.IsNull(ars.GetReservation(reservation.ReservationNr+reservationList.Count+1));
             }
         }
-
-        //Autos Kunden Reservationen: Einfügen
-        //####################################
+        #endregion Suche anhand des Primärschlüssels
+        #region Einfügen
         [TestMethod]
         public void InsertAutoTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-
-            List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
-
             IAutoReservationService ars = Target;
-            StandardAuto addtest = new StandardAuto();
+
+            AutoDto addtest = new AutoDto();
             addtest.Marke = "Fiat Punto Abart";
             addtest.Tagestarif = 90;
 
-            ars.AddAuto(DtoConverter.ConvertToDto(addtest));
+            ars.AddAuto(addtest);
 
-            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
-            foreach (Auto auto in autoList)
-            {
-                if (auto.Marke == addtest.Marke)
-                {
-                    Assert.AreEqual(addtest, auto);
-                }
-            }
+            List<AutoDto> autoList = ars.GetAutos();
+            Assert.AreEqual(4, autoList.Count);
         }
 
         [TestMethod]
         public void InsertKundeTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-
-            List<Kunde> kundeListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
-
             IAutoReservationService ars = Target;
-            Kunde addtest = new Kunde();
 
-            addtest.Nachname = "Person";
-            addtest.Vorname = "Testoni";
-            addtest.Geburtsdatum = new DateTime(1984,7, 21);
+            KundeDto addTest = new KundeDto();
 
-            ars.AddKunde(DtoConverter.ConvertToDto(addtest));
+            addTest.Nachname = "Person";
+            addTest.Vorname = "Testoni";
+            addTest.Geburtsdatum = new DateTime(1984,7, 21);
 
-            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
-            foreach (Kunde kunde in kundeList)
-            {
-                if (kunde.Nachname == addtest.Nachname)
-                {
-                    Assert.AreEqual(addtest, kunde);
-                }
-            }
+            ars.AddKunde(addTest);
+
+            Assert.AreEqual(5, ars.GetKunden().Count);
         }
 
         [TestMethod]
         public void InsertReservationTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-
-            List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
-
             IAutoReservationService ars = Target;
-            Reservation addtest = new Reservation();
 
-            addtest.Von = new DateTime(2020, 1, 10);
-            addtest.Bis = new DateTime(2020, 1, 20);
+            ReservationDto addTest = new ReservationDto();
 
-            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
-            foreach (Auto auto in autoList)
-            {
-                addtest.AutoId = auto.Id;
-            }
-            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
-            foreach (Kunde kunde in kundeList)
-            {
-                addtest.KundeId = kunde.Id;
-            }
+            addTest.Von = new DateTime(2020, 1, 10);
+            addTest.Bis = new DateTime(2020, 1, 20);
 
-            ars.AddReservation(DtoConverter.ConvertToDto(addtest));
+            List<AutoDto> autoList = ars.GetAutos();
+            addTest.Auto = autoList[1];
+            
+            List<KundeDto> kundeList = ars.GetKunden();
+            addTest.Kunde = kundeList[1];
 
-            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
-            foreach (Reservation reservation in reservationList)
-            {
-                if (reservation.AutoId == addtest.AutoId && reservation.KundeId==addtest.KundeId)
-                {
-                    Assert.AreEqual(addtest, reservation);
-                }
-            }
+            ars.AddReservation(addTest);
+
+            List<ReservationDto> reservationList = ars.GetReservationen();
+            Assert.AreEqual(2, reservationList.Count);
         }
-
-        //Autos Kunden Reservationen: Updates
-        //###################################
+        #endregion Einfügen
+        #region Updates
         [TestMethod]
         public void UpdateAutoTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-
-            List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
-
             IAutoReservationService ars = Target;
-            StandardAuto updatetest = new StandardAuto();
-            updatetest.Marke = "Fiat Punto Abart";
-            updatetest.Tagestarif = 90;
 
-            StandardAuto updateOriginal = new StandardAuto();
+            List<AutoDto> autoListOriginale = ars.GetAutos();
 
-            updateOriginal.Marke = "Fiat Punto";
-            updateOriginal.Tagestarif = 50;
+            AutoDto updateOriginal = autoListOriginale[0];
+            AutoDto updateModified = (AutoDto)updateOriginal.Clone();
 
-            ars.UpdateAuto(DtoConverter.ConvertToDto(updatetest),DtoConverter.ConvertToDto(updateOriginal));
+            updateModified.Marke = "Fiat Punto Abart";
 
-            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
-            foreach (Auto auto in autoList)
-            {
-                if (auto.Marke == updatetest.Marke)
-                {
-                    Assert.AreEqual(updatetest, auto);
-                }
-            }
+            ars.UpdateAuto(updateModified, updateOriginal);
         }
 
         [TestMethod]
         public void UpdateKundeTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-
-            List<Kunde> kundeListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
-
             IAutoReservationService ars = Target;
-            Kunde updateTest = new Kunde();
-            updateTest.Nachname = "Nass";
-            updateTest.Vorname = "Annarosa";
-            updateTest.Geburtsdatum = new DateTime(1961, 5, 5);
 
-            Kunde updateOriginal = new Kunde();
+            List<KundeDto> kundeListOriginale = ars.GetKunden();
 
-            updateOriginal.Nachname = "Nass";
-            updateOriginal.Vorname = "Anna";
-            updateOriginal.Geburtsdatum = new DateTime(1961, 5, 5);
+            KundeDto updateOriginal = kundeListOriginale[0];
+            KundeDto updateModified = (KundeDto)updateOriginal.Clone();
+            
+            updateModified.Vorname = "Annarosa";
 
-            ars.UpdateKunde(DtoConverter.ConvertToDto(updateTest), DtoConverter.ConvertToDto(updateOriginal));
+            ars.UpdateKunde(updateModified, updateOriginal);
 
-            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
-            foreach (Kunde kunde in kundeList)
+            List<KundeDto> kundeList = ars.GetKunden();
+            foreach (KundeDto kunde in kundeList)
             {
-                if (kunde.Nachname == updateTest.Nachname)
+                if (kunde.Nachname == updateModified.Nachname)
                 {
-                    Assert.AreEqual(updateTest.Nachname, kunde.Nachname);
+                    Assert.AreEqual(updateModified.Vorname, kunde.Vorname);
                 }
             }
         }
@@ -346,45 +289,18 @@ namespace AutoReservation.Testing
         [TestMethod]
         public void UpdateReservationTest()
         {
-            int updateAutoId=0;
-            int updateKundeId=0;
-            Reservation updateTest = new Reservation();
-
             TestEnvironmentHelper.InitializeTestData();
-            List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
-
             IAutoReservationService ars = Target;
 
-            Reservation updateOriginal = new Reservation();
-            List<Reservation> reservationList = ars.GetReservationen().ConvertToEntities();
-            foreach (Reservation reservation in reservationList)
-            {
-                updateOriginal = reservation;
-            }
+            List<ReservationDto> reservationList = ars.GetReservationen();
+            ReservationDto updateOriginal = reservationList[0];
+            ReservationDto updateModified = (ReservationDto) updateOriginal.Clone();
 
-            List<Auto> autoList = ars.GetAutos().ConvertToEntities();
-            foreach (Auto auto in autoList)
-            {
-                if (auto.Id != updateOriginal.AutoId)
-                {
-                    //Console.WriteLine("autoid: " + auto.Id);
-                    //Console.WriteLine("automarke: " + auto.Marke);
-                    updateAutoId = auto.Id;
-                }
-            }
-            List<Kunde> kundeList = ars.GetKunden().ConvertToEntities();
-            foreach (Kunde kunde in kundeList)
-            {
-                if (kunde.Id != updateOriginal.KundeId)
-                {
-                    updateKundeId = kunde.Id;
-                }
-            }
-            updateTest.ReservationsNr = updateOriginal.ReservationsNr;
-            updateTest.KundeId = updateKundeId;
-            updateTest.AutoId = updateAutoId;
-            updateTest.Von = updateOriginal.Von;
-            updateTest.Bis = updateOriginal.Bis;
+            List<AutoDto> autoList = ars.GetAutos();
+            List<KundeDto> kundeList = ars.GetKunden();
+
+            updateModified.Kunde.Id = kundeList[0].Id;
+            updateModified.Auto.Id = autoList[0].Id;
 
             //Console.WriteLine("UpdateReservationTest updatetest.autoid: " + updateTest.AutoId);
             //Console.WriteLine("UpdateReservationTest updatetest.kundeid: " + updateTest.KundeId);
@@ -396,100 +312,142 @@ namespace AutoReservation.Testing
             //Console.WriteLine("UpdateReservationTest updateoriginal.autoid: " + updateOriginal.Von);
             //Console.WriteLine("UpdateReservationTest updateoriginal.autoid: " + updateOriginal.Bis);
 
-            ars.UpdateReservation(DtoConverter.ConvertToDto(updateTest), DtoConverter.ConvertToDto(updateOriginal));
+            ars.UpdateReservation(updateModified, updateOriginal);
 
-            foreach (Reservation reservation in reservationList)
+            reservationList = ars.GetReservationen();
+            foreach (ReservationDto reservation in reservationList)
             {
-                if (reservation.ReservationsNr == updateTest.ReservationsNr)
+                if (reservation.ReservationNr == updateModified.ReservationNr)
                 {
-                    Assert.AreEqual(updateOriginal.ReservationsNr, updateTest.ReservationsNr);
+                    Assert.AreEqual(updateOriginal.ReservationNr, updateModified.ReservationNr);
                 }
             }
         }
-
-        //Autos Kunden Reservationen: Updates mit Optimistic Concurrency Verletzung
-        //#########################################################################
+        #endregion Updates
+        
+        #region Updates mit Optimistic Concurrency Verletzung
         [TestMethod]
+        [ExpectedException(typeof(BusinessLayer.LocalOptimisticConcurrencyException<Auto>))]
         public void UpdateAutoTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
-            throw new NotImplementedException();
+
+            IAutoReservationService ars = Target;
+
+            List<AutoDto> autoListOriginale = ars.GetAutos();
+
+            AutoDto updateOriginal = (AutoDto)autoListOriginale[0].Clone();
+            //AutoDto updateOriginal2 = (AutoDto)autoListOriginale[0].Clone();
+            AutoDto updateModified1 = (AutoDto)updateOriginal.Clone();
+            AutoDto updateModified2 = (AutoDto)updateOriginal.Clone();
+
+            updateModified1.Marke = "Fiat Punto Abart";
+            updateModified2.Marke = "Lamborghini Countach";
+
+            ars.UpdateAuto(updateModified1, updateOriginal);
+            ars.UpdateAuto(updateModified2, updateOriginal);
+
+            //try
+            //{
+            //    ars.UpdateAuto(updateModified2, updateOriginal);
+            //    Assert.Fail("No Exception thrown");
+            //}
+            //catch (OptimisticConcurrencyException ex)
+            //{
+            //    Assert.IsTrue(ex is OptimisticConcurrencyException);
+            //}
         }
 
         [TestMethod]
+        [ExpectedException(typeof(BusinessLayer.LocalOptimisticConcurrencyException<Kunde>))]
         public void UpdateKundeTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
-            throw new NotImplementedException();
+
+            IAutoReservationService ars = Target;
+
+            List<KundeDto> kundenListOriginale = ars.GetKunden();
+
+            KundeDto updateOriginal1 = (KundeDto)kundenListOriginale[0].Clone();
+            KundeDto updateOriginal2 = (KundeDto)kundenListOriginale[0].Clone();
+            KundeDto updateTest1 = (KundeDto)updateOriginal1.Clone();
+            KundeDto updateTest2 = (KundeDto)updateOriginal2.Clone();
+
+            updateTest1.Vorname = "Peter";
+            updateTest2.Vorname = "Markus";
+
+            ars.UpdateKunde(updateTest1, updateOriginal1);
+            ars.UpdateKunde(updateTest2, updateOriginal2);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(BusinessLayer.LocalOptimisticConcurrencyException<Reservation>))]
         public void UpdateReservationTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
-            throw new NotImplementedException();
-        }
 
-        //Autos Kunden Reservationen: Löschen
+            IAutoReservationService ars = Target;
+
+            List<ReservationDto> reservationListOriginale = ars.GetReservationen();
+
+            ReservationDto updateOriginal1 = (ReservationDto)reservationListOriginale[0].Clone();
+            ReservationDto updateOriginal2 = (ReservationDto)reservationListOriginale[0].Clone();
+            ReservationDto updateTest1 = (ReservationDto)updateOriginal1.Clone();
+            ReservationDto updateTest2 = (ReservationDto)updateOriginal2.Clone();
+
+            updateTest1.Bis = new DateTime(2114, 7, 21);
+            updateTest2.Bis = new DateTime(2014, 7, 21);
+
+            ars.UpdateReservation(updateTest1, updateOriginal1);
+            ars.UpdateReservation(updateTest2, updateOriginal2);
+        }
+        #endregion Updates mit Optimistic Concurrency Verletzung
+        #region Löschen
         //###################################
         [TestMethod]
         public void DeleteKundeTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Kunde> kundeListTestData = TestEnvironmentHelper.InitializeKundenListTestData();
-
             IAutoReservationService ars = Target;
-            List<Kunde> originalKundenList = ars.GetKunden().ConvertToEntities();
-            Kunde deleteTest = originalKundenList[1];
-            
-            ars.DeleteKunde(DtoConverter.ConvertToDto(deleteTest));
-            List<Kunde> modifiedKundenList = ars.GetKunden().ConvertToEntities();
 
-            Assert.AreNotEqual(originalKundenList, modifiedKundenList);
+            List<KundeDto> kundenList = ars.GetKunden();
+            KundeDto deleteTest = kundenList[0];
+            
+            ars.DeleteKunde(deleteTest);
+
+            kundenList = ars.GetKunden();
+            Assert.AreEqual(3, kundenList.Count);
         }
 
         [TestMethod]
         public void DeleteAutoTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Auto> autoListTestData = TestEnvironmentHelper.InitializeAutoListTestData();
-
             IAutoReservationService ars = Target;
-            List<Auto> originalAutoList = ars.GetAutos().ConvertToEntities();
-            Auto deleteTest = originalAutoList[1];
-            //Console.WriteLine("delAuto.id :" + deleteTest.Id);
-            //Console.WriteLine("delAuto.marke: " + deleteTest.Marke);
-            //Console.WriteLine("delAuto.tagestarif: " + deleteTest.Tagestarif);
-            //Console.WriteLine("delAuto.reservation: " + deleteTest.Reservation);
 
-            ars.DeleteAuto(DtoConverter.ConvertToDto(deleteTest));
-            List<Auto> modifiedAutoList = ars.GetAutos().ConvertToEntities();
+            List<AutoDto> autoList = ars.GetAutos();
+            AutoDto deleteTest = autoList[1];
 
-            //foreach (Auto auto in modifiedAutoList)
-            //{
-            //    Console.WriteLine("Auto.id :" + auto.Id);
-            //    Console.WriteLine("Auto.marke: " + auto.Marke);
-            //    Console.WriteLine("Auto.tagestarif: " + auto.Tagestarif);
-            //    Console.WriteLine("Auto.reservation: " + auto.Reservation);
-            //}
+            ars.DeleteAuto(deleteTest);
 
-            Assert.AreNotEqual(originalAutoList, modifiedAutoList);
+            autoList = ars.GetAutos();
+            Assert.AreEqual(2, autoList.Count);
         }
 
         [TestMethod]
         public void DeleteReservationTest()
         {
             TestEnvironmentHelper.InitializeTestData();
-            List<Reservation> reservationListTestData = TestEnvironmentHelper.InitializeReservationTestData();
-
             IAutoReservationService ars = Target;
-            List<Reservation> originalReservationList = ars.GetReservationen().ConvertToEntities();
-            Reservation deleteTest = originalReservationList[0];
 
-            ars.DeleteReservation(DtoConverter.ConvertToDto(deleteTest));
-            List<Reservation> modifiedReservationList = ars.GetReservationen().ConvertToEntities();
+            List<ReservationDto> reservationList = ars.GetReservationen();
+            ReservationDto deleteTest = reservationList[0];
 
-            Assert.AreNotEqual(originalReservationList, modifiedReservationList);
+            ars.DeleteReservation(deleteTest);
+            
+            reservationList = ars.GetReservationen();
+            Assert.AreEqual(0, reservationList.Count);
         }
+        #endregion Löschen
     }
 }
