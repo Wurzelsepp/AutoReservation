@@ -32,7 +32,7 @@ namespace AutoReservation.BusinessLayer
                     Console.WriteLine("AutoReservationBusinessComponent ConcurrencyException");
                     //context.AcceptAllChanges();
                     context.Refresh(System.Data.Objects.RefreshMode.StoreWins, autoModified);
-                    throw new LocalOptimisticConcurrencyException<Auto>(ex.Message) { Entity = autoModified };
+                    throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
                 }
             }
         }

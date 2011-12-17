@@ -7,6 +7,8 @@ using AutoReservation.Service.Wcf;
 using System.Collections.Generic;
 using System.Data;
 using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.Exceptions;
+using System.ServiceModel;
 
 namespace AutoReservation.Testing
 {
@@ -327,25 +329,48 @@ namespace AutoReservation.Testing
         
         #region Updates mit Optimistic Concurrency Verletzung
         [TestMethod]
-        [ExpectedException(typeof(BusinessLayer.LocalOptimisticConcurrencyException<Auto>))]
+        //[ExpectedException(typeof(OptimisticConcurrencyException<AutoDto>))]
         public void UpdateAutoTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
+            var entityFirst = Target.GetAutos()[0];
+            var entitySecond = Target.GetAutos()[0];
 
-            IAutoReservationService ars = Target;
+            var originalFirst = entityFirst.Clone() as AutoDto;
+            var originalSecond = entitySecond.Clone() as AutoDto;
 
-            List<AutoDto> autoListOriginale = ars.GetAutos();
+            entityFirst.Marke = "First One";
+            entitySecond.Marke = "Second One";
 
-            AutoDto updateOriginal = (AutoDto)autoListOriginale[0].Clone();
-            //AutoDto updateOriginal2 = (AutoDto)autoListOriginale[0].Clone();
-            AutoDto updateModified1 = (AutoDto)updateOriginal.Clone();
-            AutoDto updateModified2 = (AutoDto)updateOriginal.Clone();
+            try
+            {
+                Target.UpdateAuto(entityFirst, originalFirst);
+                Target.UpdateAuto(entitySecond, originalSecond);
+                Assert.Fail("No exception thrown");
+            }
+            catch (Exception concurrencyException)
+            {
+                var updatedFirst = Target.GetAutos().Find(m => m.Id == entityFirst.Id);
+                var updatedSecond = Target.GetAutos().Find(m => m.Id == entitySecond.Id);
+                Assert.AreEqual(entityFirst.Marke, updatedFirst.Marke);
+                Assert.AreEqual(entityFirst.Marke, updatedSecond.Marke);
+            }
+            //TestEnvironmentHelper.InitializeTestData();
 
-            updateModified1.Marke = "Fiat Punto Abart";
-            updateModified2.Marke = "Lamborghini Countach";
+            //IAutoReservationService ars = Target;
 
-            ars.UpdateAuto(updateModified1, updateOriginal);
-            ars.UpdateAuto(updateModified2, updateOriginal);
+            //List<AutoDto> autoListOriginale = ars.GetAutos();
+
+            //AutoDto updateOriginal = (AutoDto)autoListOriginale[0].Clone();
+            ////AutoDto updateOriginal2 = (AutoDto)autoListOriginale[0].Clone();
+            //AutoDto updateModified1 = (AutoDto)updateOriginal.Clone();
+            //AutoDto updateModified2 = (AutoDto)updateOriginal.Clone();
+
+            //updateModified1.Marke = "Fiat Punto Abart";
+            //updateModified2.Marke = "Lamborghini Countach";
+
+            //ars.UpdateAuto(updateModified1, updateOriginal);
+            //ars.UpdateAuto(updateModified2, updateOriginal);
 
             //try
             //{

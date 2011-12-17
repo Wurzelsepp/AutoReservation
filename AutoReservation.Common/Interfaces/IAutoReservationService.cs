@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using AutoReservation.Common.DataTransferObjects;
 using System.ServiceModel;
+using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.Exceptions;
 
 namespace AutoReservation.Common.Interfaces
 {
@@ -25,7 +26,8 @@ namespace AutoReservation.Common.Interfaces
 
         //Update 
         [OperationContract]
-        [FaultContract(typeof(AutoDto))]
+        //[FaultContract(typeof(OptimisticConcurrencyException<AutoDto>))]
+        //[MapExceptionToFault(typeof(ApplicationException), typeof(MyApplicationFault))]
         void UpdateAuto(AutoDto modified, AutoDto original);
         [OperationContract]
         [FaultContract(typeof(ReservationDto))]

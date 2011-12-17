@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using AutoReservation.Common.Interfaces;
+using System.ServiceModel;
 using AutoReservation.BusinessLayer;
 using AutoReservation.Common.DataTransferObjects;
-using System.Collections.Generic;
-using System.ServiceModel;
+using AutoReservation.Common.Interfaces;
 using AutoReservation.Dal;
+using AutoReservation.Common.Exceptions;
 
 namespace AutoReservation.Service.Wcf
 {
@@ -72,16 +73,17 @@ namespace AutoReservation.Service.Wcf
         public void UpdateAuto(AutoDto modified, AutoDto original)
         {
             WriteActualMethod();
-            try
-            {
+            //try
+            //{
                 instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
-            }
-            catch (LocalOptimisticConcurrencyException<Auto> ex)
-            {
-                Console.WriteLine("AutoReservationService: updateauto");
-                //throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
-                throw new FaultException<AutoDto>(ex.Entity.ConvertToDto(), ex.Message);
-            }
+            //}
+            //catch (LocalOptimisticConcurrencyException<Auto> ex)
+            //{
+                //Console.WriteLine("AutoReservationService: updateauto");
+                //throw new OptimisticConcurrencyException<AutoDto>(ex.Message) { Entity = modified };
+                //throw new OptimisticConcurrencyException<AutoDto>(ex.Message) { Entity = ex.Entity.ConvertToDto() };
+                //throw new FaultException<AutoDto>(ex.Entity.ConvertToDto(), ex.Message);
+            //}
         }
         public void UpdateReservation(ReservationDto modified, ReservationDto original)
         {
@@ -94,7 +96,7 @@ namespace AutoReservation.Service.Wcf
             {
                 Console.WriteLine("AutoReservationService: updatereservation");
                 //throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
-                throw new FaultException<ReservationDto>(ex.Entity.ConvertToDto(), ex.Message);
+                //throw new FaultException<ReservationDto>(ex.Entity.ConvertToDto(), ex.Message);
             }
         }
         public void UpdateKunde(KundeDto modified, KundeDto original)
@@ -108,7 +110,7 @@ namespace AutoReservation.Service.Wcf
             {
                 Console.WriteLine("AutoReservationService: updatekunde");
                 //throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
-                throw new FaultException<KundeDto>(ex.Entity.ConvertToDto(), ex.Message);
+                //throw new FaultException<KundeDto>(ex.Entity.ConvertToDto(), ex.Message);
             }
         }
 
@@ -136,42 +138,43 @@ namespace AutoReservation.Service.Wcf
             WriteActualMethod();
             List<Auto> autoTemp = instance.GetAutos();
 
-            List<AutoDto> autoList =new List<AutoDto>();
-            foreach (Auto auto in autoTemp){
+            List<AutoDto> autoList = new List<AutoDto>();
+            foreach (Auto auto in autoTemp)
+            {
                 //Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
                 autoList.Add(DtoConverter.ConvertToDto(auto));
             }
             //Console.WriteLine("AutoReservationService GetAutos Ende");
             return autoList;
             //return DtoConverter.ConvertToDtos(instance.GetAutos());
-                //List<AutoDto> ret = new List<AutoDto>();
-                //foreach (Dal.Auto auto in instance.GetAutos())
-                //    ret.Add(auto.ConvertToDto());
-                //return ret;
+            //List<AutoDto> ret = new List<AutoDto>();
+            //foreach (Dal.Auto auto in instance.GetAutos())
+            //    ret.Add(auto.ConvertToDto());
+            //return ret;
         }
         public List<ReservationDto> GetReservationen()
         {
             //get
             //{
-                WriteActualMethod();
-                //List<ReservationDto> ret = new List<ReservationDto>();
-                //foreach (Dal.Reservation res in instance.GetReservations())
-                //    ret.Add(res.ConvertToDto());
-                //return ret;
+            WriteActualMethod();
+            //List<ReservationDto> ret = new List<ReservationDto>();
+            //foreach (Dal.Reservation res in instance.GetReservations())
+            //    ret.Add(res.ConvertToDto());
+            //return ret;
             //}    
-                return instance.GetReservations().ConvertToDtos();
+            return instance.GetReservations().ConvertToDtos();
         }
         public List<KundeDto> GetKunden()
         {
             //get
             //{
-                WriteActualMethod();
+            WriteActualMethod();
             //    List<KundeDto> ret = new List<KundeDto>();
             //    foreach (Dal.Kunde kunde in instance.GetKunden())
             //        ret.Add(kunde.ConvertToDto());
             //    return ret;
             //} 
-                return instance.GetKunden().ConvertToDtos();
+            return instance.GetKunden().ConvertToDtos();
         }
     }
     //Der Service-Layer ist in dieser einfachen 
