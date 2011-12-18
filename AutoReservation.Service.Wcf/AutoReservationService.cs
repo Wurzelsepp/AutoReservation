@@ -21,17 +21,12 @@ namespace AutoReservation.Service.Wcf
         }
 
         //Gibt den Namen der aufrufenden Methode auf die Konsole aus.
-        //sollte bei jedem Service-Aufruf ausgeführt werden
-        //so wird auf der Konsole des Services immer ausgegeben, was gerade passiert.         
         private static void WriteActualMethod()
         {
             Console.WriteLine("Calling: " + new StackTrace().GetFrame(1).GetMethod().Name);
         }
 
-        //Im Normalfall müsste es hier genügen, eine Instanz der 
-        //AutoReservationBusinessComponent zu halten und die eingehenden Calls mehr 
-        //oder weniger direkt an diese weiterzureichen.
-
+        #region GET
         public AutoDto GetAuto(int key)
         {
             WriteActualMethod();
@@ -50,89 +45,9 @@ namespace AutoReservation.Service.Wcf
             return instance.GetKunde(key).ConvertToDto();
             throw new NotImplementedException();
         }
+        #endregion GET
 
-        public void AddAuto(AutoDto auto)
-        {
-            WriteActualMethod();
-            instance.AddAuto(auto.ConvertToEntity());
-            //throw new NotImplementedException();
-        }
-        public void AddReservation(ReservationDto reservation)
-        {
-            WriteActualMethod();
-            instance.AddResevation(reservation.ConvertToEntity());
-            //throw new NotImplementedException();
-        }
-        public void AddKunde(KundeDto kunde)
-        {
-            WriteActualMethod();
-            instance.AddKunde(kunde.ConvertToEntity());
-            //throw new NotImplementedException();
-        }
-
-        public void UpdateAuto(AutoDto modified, AutoDto original)
-        {
-            WriteActualMethod();
-            //try
-            //{
-                instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
-            //}
-            //catch (LocalOptimisticConcurrencyException<Auto> ex)
-            //{
-                //Console.WriteLine("AutoReservationService: updateauto");
-                //throw new OptimisticConcurrencyException<AutoDto>(ex.Message) { Entity = modified };
-                //throw new OptimisticConcurrencyException<AutoDto>(ex.Message) { Entity = ex.Entity.ConvertToDto() };
-                //throw new FaultException<AutoDto>(ex.Entity.ConvertToDto(), ex.Message);
-            //}
-        }
-        public void UpdateReservation(ReservationDto modified, ReservationDto original)
-        {
-            WriteActualMethod();
-            try
-            {
-                instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
-            }
-            catch (LocalOptimisticConcurrencyException<Reservation> ex)
-            {
-                Console.WriteLine("AutoReservationService: updatereservation");
-                //throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
-                //throw new FaultException<ReservationDto>(ex.Entity.ConvertToDto(), ex.Message);
-            }
-        }
-        public void UpdateKunde(KundeDto modified, KundeDto original)
-        {
-            WriteActualMethod();
-            try
-            {
-                instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
-            }
-            catch (LocalOptimisticConcurrencyException<Kunde> ex)
-            {
-                Console.WriteLine("AutoReservationService: updatekunde");
-                //throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
-                //throw new FaultException<KundeDto>(ex.Entity.ConvertToDto(), ex.Message);
-            }
-        }
-
-        public void DeleteAuto(AutoDto toDelete)
-        {
-            WriteActualMethod();
-            instance.DeleteAuto(toDelete.ConvertToEntity());
-            //throw new NotImplementedException();
-        }
-        public void DeleteReservation(ReservationDto toDelete)
-        {
-            WriteActualMethod();
-            instance.DeleteReservation(toDelete.ConvertToEntity());
-            //throw new NotImplementedException();
-        }
-        public void DeleteKunde(KundeDto toDelete)
-        {
-            WriteActualMethod();
-            instance.DeleteKunde(toDelete.ConvertToEntity());
-            //throw new NotImplementedException();
-        }
-
+        #region GETALL
         public List<AutoDto> GetAutos()
         {
             WriteActualMethod();
@@ -176,6 +91,68 @@ namespace AutoReservation.Service.Wcf
             //} 
             return instance.GetKunden().ConvertToDtos();
         }
+        #endregion GETALL
+
+        #region ADD
+        public void AddAuto(AutoDto auto)
+        {
+            WriteActualMethod();
+            instance.AddAuto(auto.ConvertToEntity());
+            //throw new NotImplementedException();
+        }
+        public void AddReservation(ReservationDto reservation)
+        {
+            WriteActualMethod();
+            instance.AddResevation(reservation.ConvertToEntity());
+            //throw new NotImplementedException();
+        }
+        public void AddKunde(KundeDto kunde)
+        {
+            WriteActualMethod();
+            instance.AddKunde(kunde.ConvertToEntity());
+            //throw new NotImplementedException();
+        }
+        #endregion ADD
+
+        #region UPDATE
+        public void UpdateAuto(AutoDto modified, AutoDto original)
+        {
+            WriteActualMethod();
+            instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
+        }
+        public void UpdateReservation(ReservationDto modified, ReservationDto original)
+        {
+            WriteActualMethod();
+            instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
+        }
+        public void UpdateKunde(KundeDto modified, KundeDto original)
+        {
+            WriteActualMethod();
+            instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
+        }
+        #endregion UPDATE
+
+        #region DELETE
+        public void DeleteAuto(AutoDto toDelete)
+        {
+            WriteActualMethod();
+            instance.DeleteAuto(toDelete.ConvertToEntity());
+            //throw new NotImplementedException();
+        }
+        public void DeleteReservation(ReservationDto toDelete)
+        {
+            WriteActualMethod();
+            instance.DeleteReservation(toDelete.ConvertToEntity());
+            //throw new NotImplementedException();
+        }
+        public void DeleteKunde(KundeDto toDelete)
+        {
+            WriteActualMethod();
+            instance.DeleteKunde(toDelete.ConvertToEntity());
+            //throw new NotImplementedException();
+        }
+        #endregion DELETE
+
     }
     //Der Service-Layer ist in dieser einfachen 
     //Applikation also nicht viel mehr als ein „Durchlauferhitzer“. Die wichtigste Aufgabe ist 

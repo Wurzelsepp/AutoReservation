@@ -9,11 +9,6 @@ namespace AutoReservation.Common.Exceptions
     {
         public OptimisticConcurrencyException(string msg) : base(msg) { }
 
-        //public OptimisticConcurrencyException()
-        //{
-        //    // TODO: Complete member initialization
-        //}
-
         [DataMember]
         public T Entity { get; set; }
     }

@@ -111,23 +111,8 @@ namespace AutoReservation.BusinessLayer
                     Console.WriteLine("AutoReservationBusinessComponent ConcurrencyException");
                     //context.AcceptAllChanges();
                     context.Refresh(System.Data.Objects.RefreshMode.StoreWins, reservationModified);
-                    throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message) { Entity = reservationModified };
+                    throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
                 }
-
-            //using (AutoReservationEntities context = new AutoReservationEntities())
-            //{
-            //    try
-            //    {
-            //        context.Reservationen.Attach(reservationOriginal);
-            //        context.Reservationen.ApplyCurrentValues(reservationModified);
-            //        context.Reservationen.Execute(System.Data.Objects.MergeOption.PreserveChanges);
-            //        context.AcceptAllChanges();
-            //        context.SaveChanges();
-            //    }
-            //    catch (OptimisticConcurrencyException ex)
-            //    {
-            //        throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
-            //    }
             }
         }
         public void DeleteReservation(Reservation reservationDelete)
@@ -208,25 +193,9 @@ namespace AutoReservation.BusinessLayer
                 catch (OptimisticConcurrencyException ex)
                 {
                     context.Refresh(System.Data.Objects.RefreshMode.StoreWins, kundeModified);
-                    throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message) { Entity = kundeModified };
+                    throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
                 }
             }
-
-            //using (AutoReservationEntities context = new AutoReservationEntities())
-            //{
-            //    try
-            //    {
-            //        context.Kunden.Attach(kundeOriginal);
-            //        context.Kunden.ApplyCurrentValues(kundeModified);
-            //        context.Kunden.Execute(System.Data.Objects.MergeOption.PreserveChanges);
-            //        context.AcceptAllChanges();
-            //        context.SaveChanges();
-            //    }
-            //    catch (OptimisticConcurrencyException ex)
-            //    {
-            //        throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
-            //    }
-            //}
         }
         public void DeleteKunde(Kunde kundeDelete)
         {

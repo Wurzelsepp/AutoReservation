@@ -26,14 +26,10 @@ namespace AutoReservation.Common.Interfaces
 
         //Update 
         [OperationContract]
-        //[FaultContract(typeof(OptimisticConcurrencyException<AutoDto>))]
-        //[MapExceptionToFault(typeof(ApplicationException), typeof(MyApplicationFault))]
         void UpdateAuto(AutoDto modified, AutoDto original);
         [OperationContract]
-        [FaultContract(typeof(ReservationDto))]
         void UpdateReservation(ReservationDto modified, ReservationDto original);
         [OperationContract]
-        [FaultContract(typeof(KundeDto))]
         void UpdateKunde(KundeDto modified, KundeDto original);
 
         //Löschen 
@@ -51,6 +47,5 @@ namespace AutoReservation.Common.Interfaces
         List<ReservationDto> GetReservationen();
         [OperationContract]
         List<KundeDto> GetKunden();
-
     }
 }

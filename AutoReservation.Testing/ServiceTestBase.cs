@@ -333,98 +333,90 @@ namespace AutoReservation.Testing
         public void UpdateAutoTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
-            var entityFirst = Target.GetAutos()[0];
-            var entitySecond = Target.GetAutos()[0];
+            IAutoReservationService ars = Target;
+            List<AutoDto> autoListOriginale = ars.GetAutos();
 
-            var originalFirst = entityFirst.Clone() as AutoDto;
-            var originalSecond = entitySecond.Clone() as AutoDto;
+            AutoDto updateOriginal = (AutoDto)autoListOriginale[0].Clone();
+            var updateModified1 = updateOriginal.Clone() as AutoDto;
+            var updateModified2 = updateOriginal.Clone() as AutoDto;
 
-            entityFirst.Marke = "First One";
-            entitySecond.Marke = "Second One";
+            updateModified1.Marke = "Fiat Punto Abart";
+            updateModified2.Marke = "Lamborghini Countach";
 
             try
             {
-                Target.UpdateAuto(entityFirst, originalFirst);
-                Target.UpdateAuto(entitySecond, originalSecond);
+                ars.UpdateAuto(updateModified1, updateOriginal);
+                ars.UpdateAuto(updateModified2, updateOriginal);
                 Assert.Fail("No exception thrown");
             }
             catch (Exception concurrencyException)
             {
-                var updatedFirst = Target.GetAutos().Find(m => m.Id == entityFirst.Id);
-                var updatedSecond = Target.GetAutos().Find(m => m.Id == entitySecond.Id);
-                Assert.AreEqual(entityFirst.Marke, updatedFirst.Marke);
-                Assert.AreEqual(entityFirst.Marke, updatedSecond.Marke);
+                Console.WriteLine("Message: " + concurrencyException.Message);
+                var updatedFirst = Target.GetAutos().Find(m => m.Id == updateModified1.Id);
+                var updatedSecond = Target.GetAutos().Find(m => m.Id == updateModified2.Id);
+                Assert.AreEqual(updateModified1.Marke, updatedFirst.Marke);
+                Assert.AreEqual(updateModified1.Marke, updatedSecond.Marke);
             }
-            //TestEnvironmentHelper.InitializeTestData();
-
-            //IAutoReservationService ars = Target;
-
-            //List<AutoDto> autoListOriginale = ars.GetAutos();
-
-            //AutoDto updateOriginal = (AutoDto)autoListOriginale[0].Clone();
-            ////AutoDto updateOriginal2 = (AutoDto)autoListOriginale[0].Clone();
-            //AutoDto updateModified1 = (AutoDto)updateOriginal.Clone();
-            //AutoDto updateModified2 = (AutoDto)updateOriginal.Clone();
-
-            //updateModified1.Marke = "Fiat Punto Abart";
-            //updateModified2.Marke = "Lamborghini Countach";
-
-            //ars.UpdateAuto(updateModified1, updateOriginal);
-            //ars.UpdateAuto(updateModified2, updateOriginal);
-
-            //try
-            //{
-            //    ars.UpdateAuto(updateModified2, updateOriginal);
-            //    Assert.Fail("No Exception thrown");
-            //}
-            //catch (OptimisticConcurrencyException ex)
-            //{
-            //    Assert.IsTrue(ex is OptimisticConcurrencyException);
-            //}
         }
 
         [TestMethod]
-        [ExpectedException(typeof(BusinessLayer.LocalOptimisticConcurrencyException<Kunde>))]
         public void UpdateKundeTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
-
             IAutoReservationService ars = Target;
-
             List<KundeDto> kundenListOriginale = ars.GetKunden();
 
-            KundeDto updateOriginal1 = (KundeDto)kundenListOriginale[0].Clone();
-            KundeDto updateOriginal2 = (KundeDto)kundenListOriginale[0].Clone();
-            KundeDto updateTest1 = (KundeDto)updateOriginal1.Clone();
-            KundeDto updateTest2 = (KundeDto)updateOriginal2.Clone();
+            KundeDto updateOriginal = (KundeDto)kundenListOriginale[0].Clone();
+            KundeDto updateModified1 = updateOriginal.Clone() as KundeDto;
+            KundeDto updateModified2 = updateOriginal.Clone() as KundeDto;
 
-            updateTest1.Vorname = "Peter";
-            updateTest2.Vorname = "Markus";
+            updateModified1.Vorname = "Peter";
+            updateModified2.Vorname = "Markus";
 
-            ars.UpdateKunde(updateTest1, updateOriginal1);
-            ars.UpdateKunde(updateTest2, updateOriginal2);
+            try
+            {
+                ars.UpdateKunde(updateModified1, updateOriginal);
+                ars.UpdateKunde(updateModified2, updateOriginal);
+                Assert.Fail("No exception thrown");
+            }
+            catch (Exception concurrencyException)
+            {
+                Console.WriteLine("Message: " + concurrencyException.Message);
+                var updatedFirst = Target.GetKunden().Find(m => m.Id == updateModified1.Id);
+                var updatedSecond = Target.GetKunden().Find(m => m.Id == updateModified2.Id);
+                Assert.AreEqual(updateModified1.Nachname, updatedFirst.Nachname);
+                Assert.AreEqual(updateModified1.Nachname, updatedSecond.Nachname);
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(BusinessLayer.LocalOptimisticConcurrencyException<Reservation>))]
         public void UpdateReservationTestWithOptimisticConcurrency()
         {
             TestEnvironmentHelper.InitializeTestData();
-
             IAutoReservationService ars = Target;
-
             List<ReservationDto> reservationListOriginale = ars.GetReservationen();
 
-            ReservationDto updateOriginal1 = (ReservationDto)reservationListOriginale[0].Clone();
-            ReservationDto updateOriginal2 = (ReservationDto)reservationListOriginale[0].Clone();
-            ReservationDto updateTest1 = (ReservationDto)updateOriginal1.Clone();
-            ReservationDto updateTest2 = (ReservationDto)updateOriginal2.Clone();
+            ReservationDto updateOriginal = (ReservationDto)reservationListOriginale[0].Clone();
+            ReservationDto updateModified1 = updateOriginal.Clone() as ReservationDto;
+            ReservationDto updateModified2 = updateOriginal.Clone() as ReservationDto;
 
-            updateTest1.Bis = new DateTime(2114, 7, 21);
-            updateTest2.Bis = new DateTime(2014, 7, 21);
+            updateModified1.Bis = new DateTime(2114, 7, 21);
+            updateModified2.Bis = new DateTime(2014, 7, 21);
 
-            ars.UpdateReservation(updateTest1, updateOriginal1);
-            ars.UpdateReservation(updateTest2, updateOriginal2);
+            try
+            {
+                ars.UpdateReservation(updateModified1, updateOriginal);
+                ars.UpdateReservation(updateModified2, updateOriginal);
+                Assert.Fail("No exception thrown");
+            }
+            catch (Exception concurrencyException)
+            {
+                Console.WriteLine("Message: " + concurrencyException.Message);
+                var updatedFirst = Target.GetReservationen().Find(m => m.ReservationNr == updateModified1.ReservationNr);
+                var updatedSecond = Target.GetReservationen().Find(m => m.ReservationNr == updateModified2.ReservationNr);
+                Assert.AreEqual(updateModified1.Bis, updatedFirst.Bis);
+                Assert.AreEqual(updateModified1.Bis, updatedSecond.Bis);
+            }
         }
         #endregion Updates mit Optimistic Concurrency Verletzung
         #region Löschen
