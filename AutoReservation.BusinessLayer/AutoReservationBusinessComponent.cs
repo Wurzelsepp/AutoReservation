@@ -8,12 +8,13 @@ namespace AutoReservation.BusinessLayer
 {
     public class AutoReservationBusinessComponent
     {
-        // Autos
+        #region Autos
         public void AddAuto(Auto auto)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
                 context.AddToAutos(auto);
+                context.SaveChanges();
             }
         }
         public void EditAuto(Auto autoOriginal, Auto autoModified)
@@ -22,23 +23,15 @@ namespace AutoReservation.BusinessLayer
             {
                 try
                 {
-                    //Console.WriteLine("arbc_editauto_Attach");
                     context.Autos.Attach(autoOriginal);
-                    //Console.WriteLine("arbc_editauto_apllycurrentvalues");
                     context.Autos.ApplyCurrentValues(autoModified);
-                    //Console.WriteLine("arbc_editauto_execute");
-                    context.Autos.Execute(System.Data.Objects.MergeOption.PreserveChanges);
-                    //Console.WriteLine("arbc_editauto_changeobjectstate");
-                    //context.ObjectStateManager.ChangeObjectState(autoOriginal, EntityState.Modified);
-                    //Console.WriteLine("arbc_editauto_acceptallchanges");
-                    context.AcceptAllChanges();
-                    //Console.WriteLine("arbc_editauto_savechanges");
                     context.SaveChanges();
-                    //Console.WriteLine("arbc_editauto_detach");
-                    //context.Autos.Detach(autoModified);
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
+                    Console.WriteLine("AutoReservationBusinessComponent ConcurrencyException");
+                    //context.AcceptAllChanges();
+                    context.Refresh(System.Data.Objects.RefreshMode.StoreWins, autoModified);
                     throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
                 }
             }
@@ -92,13 +85,15 @@ namespace AutoReservation.BusinessLayer
 
             //return context.Autos.ToList<Auto>();
         }
+        #endregion Auto
 
-        // Reservationen
+        #region Reservationen
         public void AddResevation(Reservation reservation)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
                 context.AddToReservationen(reservation);
+                context.SaveChanges();
             }
         }
         public void EditReservation(Reservation reservationOriginal, Reservation reservationModified)
@@ -109,12 +104,13 @@ namespace AutoReservation.BusinessLayer
                 {
                     context.Reservationen.Attach(reservationOriginal);
                     context.Reservationen.ApplyCurrentValues(reservationModified);
-                    context.Reservationen.Execute(System.Data.Objects.MergeOption.PreserveChanges);
-                    context.AcceptAllChanges();
                     context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
+                    Console.WriteLine("AutoReservationBusinessComponent ConcurrencyException");
+                    //context.AcceptAllChanges();
+                    context.Refresh(System.Data.Objects.RefreshMode.StoreWins, reservationModified);
                     throw new LocalOptimisticConcurrencyException<Reservation>(ex.Message);
                 }
             }
@@ -175,13 +171,15 @@ namespace AutoReservation.BusinessLayer
                 return context.Reservationen.Include("Auto").Include("Kunde").ToList();
             }
         }
-
-        // Kunden
+        #endregion Reservationen
+        
+        #region Kunden
         public void AddKunde(Kunde kunde)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
                 context.AddToKunden(kunde);
+                context.SaveChanges();
             }
         }
         public void EditKunde(Kunde kundeOriginal, Kunde kundeModified)
@@ -192,12 +190,11 @@ namespace AutoReservation.BusinessLayer
                 {
                     context.Kunden.Attach(kundeOriginal);
                     context.Kunden.ApplyCurrentValues(kundeModified);
-                    context.Kunden.Execute(System.Data.Objects.MergeOption.PreserveChanges);
-                    context.AcceptAllChanges();
                     context.SaveChanges();
                 }
                 catch (OptimisticConcurrencyException ex)
                 {
+                    context.Refresh(System.Data.Objects.RefreshMode.StoreWins, kundeModified);
                     throw new LocalOptimisticConcurrencyException<Kunde>(ex.Message);
                 }
             }
@@ -239,5 +236,6 @@ namespace AutoReservation.BusinessLayer
 
             //return context.Kunden.ToList<Kunde>();
         }
+        #endregion Kunden
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using AutoReservation.Common.Interfaces;
+using System.ServiceModel;
 using AutoReservation.BusinessLayer;
 using AutoReservation.Common.DataTransferObjects;
-using System.Collections.Generic;
-using System.ServiceModel;
+using AutoReservation.Common.Interfaces;
 using AutoReservation.Dal;
+using AutoReservation.Common.Exceptions;
 
 namespace AutoReservation.Service.Wcf
 {
@@ -20,17 +21,12 @@ namespace AutoReservation.Service.Wcf
         }
 
         //Gibt den Namen der aufrufenden Methode auf die Konsole aus.
-        //sollte bei jedem Service-Aufruf ausgeführt werden
-        //so wird auf der Konsole des Services immer ausgegeben, was gerade passiert.         
         private static void WriteActualMethod()
         {
             Console.WriteLine("Calling: " + new StackTrace().GetFrame(1).GetMethod().Name);
         }
 
-        //Im Normalfall müsste es hier genügen, eine Instanz der 
-        //AutoReservationBusinessComponent zu halten und die eingehenden Calls mehr 
-        //oder weniger direkt an diese weiterzureichen.
-
+        #region GET
         public AutoDto GetAuto(int key)
         {
             WriteActualMethod();
@@ -49,7 +45,55 @@ namespace AutoReservation.Service.Wcf
             return instance.GetKunde(key).ConvertToDto();
             throw new NotImplementedException();
         }
+        #endregion GET
 
+        #region GETALL
+        public List<AutoDto> GetAutos()
+        {
+            WriteActualMethod();
+            List<Auto> autoTemp = instance.GetAutos();
+
+            List<AutoDto> autoList = new List<AutoDto>();
+            foreach (Auto auto in autoTemp)
+            {
+                //Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
+                autoList.Add(DtoConverter.ConvertToDto(auto));
+            }
+            //Console.WriteLine("AutoReservationService GetAutos Ende");
+            return autoList;
+            //return DtoConverter.ConvertToDtos(instance.GetAutos());
+            //List<AutoDto> ret = new List<AutoDto>();
+            //foreach (Dal.Auto auto in instance.GetAutos())
+            //    ret.Add(auto.ConvertToDto());
+            //return ret;
+        }
+        public List<ReservationDto> GetReservationen()
+        {
+            //get
+            //{
+            WriteActualMethod();
+            //List<ReservationDto> ret = new List<ReservationDto>();
+            //foreach (Dal.Reservation res in instance.GetReservations())
+            //    ret.Add(res.ConvertToDto());
+            //return ret;
+            //}    
+            return instance.GetReservations().ConvertToDtos();
+        }
+        public List<KundeDto> GetKunden()
+        {
+            //get
+            //{
+            WriteActualMethod();
+            //    List<KundeDto> ret = new List<KundeDto>();
+            //    foreach (Dal.Kunde kunde in instance.GetKunden())
+            //        ret.Add(kunde.ConvertToDto());
+            //    return ret;
+            //} 
+            return instance.GetKunden().ConvertToDtos();
+        }
+        #endregion GETALL
+
+        #region ADD
         public void AddAuto(AutoDto auto)
         {
             WriteActualMethod();
@@ -68,26 +112,27 @@ namespace AutoReservation.Service.Wcf
             instance.AddKunde(kunde.ConvertToEntity());
             //throw new NotImplementedException();
         }
+        #endregion ADD
 
+        #region UPDATE
         public void UpdateAuto(AutoDto modified, AutoDto original)
         {
             WriteActualMethod();
             instance.EditAuto(original.ConvertToEntity(), modified.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         public void UpdateReservation(ReservationDto modified, ReservationDto original)
         {
             WriteActualMethod();
             instance.EditReservation(original.ConvertToEntity(), modified.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         public void UpdateKunde(KundeDto modified, KundeDto original)
         {
             WriteActualMethod();
             instance.EditKunde(original.ConvertToEntity(), modified.ConvertToEntity());
-            //throw new NotImplementedException();
         }
+        #endregion UPDATE
 
+        #region DELETE
         public void DeleteAuto(AutoDto toDelete)
         {
             WriteActualMethod();
@@ -106,51 +151,8 @@ namespace AutoReservation.Service.Wcf
             instance.DeleteKunde(toDelete.ConvertToEntity());
             //throw new NotImplementedException();
         }
+        #endregion DELETE
 
-        public List<AutoDto> GetAutos()
-        {
-            WriteActualMethod();
-            List<Auto> autoTemp = instance.GetAutos();
-
-            List<AutoDto> autoList =new List<AutoDto>();
-            foreach (Auto auto in autoTemp){
-                Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
-                autoList.Add(DtoConverter.ConvertToDto(auto));
-            }
-            Console.WriteLine("AutoReservationService GetAutos Ende");
-            return autoList;
-            //return DtoConverter.ConvertToDtos(instance.GetAutos());
-                //List<AutoDto> ret = new List<AutoDto>();
-                //foreach (Dal.Auto auto in instance.GetAutos())
-                //    ret.Add(auto.ConvertToDto());
-                //return ret;
-        }
-
-        public List<ReservationDto> GetReservationen()
-        {
-            //get
-            //{
-                WriteActualMethod();
-                //List<ReservationDto> ret = new List<ReservationDto>();
-                //foreach (Dal.Reservation res in instance.GetReservations())
-                //    ret.Add(res.ConvertToDto());
-                //return ret;
-            //}    
-                return instance.GetReservations().ConvertToDtos();
-        }
-
-        public List<KundeDto> GetKunden()
-        {
-            //get
-            //{
-                WriteActualMethod();
-            //    List<KundeDto> ret = new List<KundeDto>();
-            //    foreach (Dal.Kunde kunde in instance.GetKunden())
-            //        ret.Add(kunde.ConvertToDto());
-            //    return ret;
-            //} 
-                return instance.GetKunden().ConvertToDtos();
-        }
     }
     //Der Service-Layer ist in dieser einfachen 
     //Applikation also nicht viel mehr als ein „Durchlauferhitzer“. Die wichtigste Aufgabe ist 
