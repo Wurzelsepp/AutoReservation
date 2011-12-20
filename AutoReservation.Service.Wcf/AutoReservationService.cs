@@ -31,19 +31,16 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
             return instance.GetAuto(key).ConvertToDto();
-            throw new NotImplementedException();
         }
         public ReservationDto GetReservation(int key)
         {
             WriteActualMethod();
             return instance.GetReservation(key).ConvertToDto();
-            throw new NotImplementedException();
         }
         public KundeDto GetKunde(int key)
         {
             WriteActualMethod();
             return instance.GetKunde(key).ConvertToDto();
-            throw new NotImplementedException();
         }
         #endregion GET
 
@@ -51,44 +48,16 @@ namespace AutoReservation.Service.Wcf
         public List<AutoDto> GetAutos()
         {
             WriteActualMethod();
-            List<Auto> autoTemp = instance.GetAutos();
-
-            List<AutoDto> autoList = new List<AutoDto>();
-            foreach (Auto auto in autoTemp)
-            {
-                //Console.WriteLine("AutoReservationService GetAutos auto.Marke:" + auto.Marke);
-                autoList.Add(DtoConverter.ConvertToDto(auto));
-            }
-            //Console.WriteLine("AutoReservationService GetAutos Ende");
-            return autoList;
-            //return DtoConverter.ConvertToDtos(instance.GetAutos());
-            //List<AutoDto> ret = new List<AutoDto>();
-            //foreach (Dal.Auto auto in instance.GetAutos())
-            //    ret.Add(auto.ConvertToDto());
-            //return ret;
+            return instance.GetAutos().ConvertToDtos();
         }
         public List<ReservationDto> GetReservationen()
         {
-            //get
-            //{
             WriteActualMethod();
-            //List<ReservationDto> ret = new List<ReservationDto>();
-            //foreach (Dal.Reservation res in instance.GetReservations())
-            //    ret.Add(res.ConvertToDto());
-            //return ret;
-            //}    
             return instance.GetReservations().ConvertToDtos();
         }
         public List<KundeDto> GetKunden()
         {
-            //get
-            //{
             WriteActualMethod();
-            //    List<KundeDto> ret = new List<KundeDto>();
-            //    foreach (Dal.Kunde kunde in instance.GetKunden())
-            //        ret.Add(kunde.ConvertToDto());
-            //    return ret;
-            //} 
             return instance.GetKunden().ConvertToDtos();
         }
         #endregion GETALL
@@ -98,19 +67,16 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
             instance.AddAuto(auto.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         public void AddReservation(ReservationDto reservation)
         {
             WriteActualMethod();
             instance.AddResevation(reservation.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         public void AddKunde(KundeDto kunde)
         {
             WriteActualMethod();
             instance.AddKunde(kunde.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         #endregion ADD
 
@@ -137,19 +103,16 @@ namespace AutoReservation.Service.Wcf
         {
             WriteActualMethod();
             instance.DeleteAuto(toDelete.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         public void DeleteReservation(ReservationDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteReservation(toDelete.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         public void DeleteKunde(KundeDto toDelete)
         {
             WriteActualMethod();
             instance.DeleteKunde(toDelete.ConvertToEntity());
-            //throw new NotImplementedException();
         }
         #endregion DELETE
 

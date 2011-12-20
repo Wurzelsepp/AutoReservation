@@ -1,10 +1,12 @@
 ﻿<UserControl x:Class="AutoReservation.Ui.Views.ReservationView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Converters="clr-namespace:AutoReservation.Ui.Converters"
-             mc:Ignorable="d" d:DesignHeight="255" d:DesignWidth="540">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:AutoReservation.Ui.Converters" DataContext="{Binding}">
+    <UserControl.Resources>
+
+        <Converters:DetailViewVisibilityConverter x:Key="DetailViewVisibilityConverter" />
+
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -24,18 +26,21 @@
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" 
                    FontSize="16" FontWeight="UltraBold" FontStyle="Italic">
-                Reservationen
+                Reservationen-Liste
             </Label>
             <DataGrid Grid.Row="1"
-                      Name="dgReservationen" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
+                      Name="dgReservation" IsSynchronizedWithCurrentItem="True" AutoGenerateColumns="False"
                       SelectionMode="Single" IsReadOnly="True"
-                      ItemsSource="{Binding Reservationen}" 
-                      SelectedItem="{Binding SelectedReservation, Mode=TwoWay}">
+                      ItemsSource="{Binding Reservations}" 
+                      SelectedItem="{Binding SelectedReservation, Mode=TwoWay}"
+                      >
+
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="ReservationNr" Binding="{Binding ReservationNr}" />
                     <DataGridTextColumn Header="Auto" Binding="{Binding Auto.Marke}" />
-                    <DataGridTextColumn Header="Kunde" Binding="{Binding Kunde.Name}" />
-                    <DataGridTextColumn Header="Von" Binding="{Binding Von, StringFormat=\{0:dd.MM.yyyy\}, Mode=TwoWay}" />
-                    <DataGridTextColumn Header="Bis" Binding="{Binding Bis, StringFormat=\{0:dd.MM.yyyy\}, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Kunde" Binding="{Binding Kunde.Nachname}" />
+                    <DataGridTextColumn Header="Von" Binding="{Binding Von}" />
+                    <DataGridTextColumn Header="Bis" Binding="{Binding Bis}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
@@ -68,26 +73,21 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
-            <Label Grid.Row="1">Auto</Label>
-            <Label Grid.Row="2">Kunde</Label>
-            <Label Grid.Row="3">Von</Label>
-            <Label Grid.Row="4">Bis</Label>
+            <Label Grid.Row="2" Content="Auto"></Label>
+            <Label Grid.Row="3" Content="Kunde"></Label>
+            <Label Grid.Row="4">Von:</Label>
+            <Label Grid.Row="5">Bis:</Label>
 
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" 
                    FontSize="16" FontWeight="UltraBold" FontStyle="Italic">
                 Reservation Editieren
             </Label>
-            <ComboBox Grid.Column="1" Grid.Row="1" 
-                      ItemsSource="{Binding Source={StaticResource Autos}}"
-                      SelectedIndex="{Binding SelectedReservation.Auto, Converter={StaticResource AutoKlasseEnumConverter}}"  />
-            <ComboBox Grid.Column="1" Grid.Row="2" 
-                      ItemsSource="{Binding Source={StaticResource Kunden}}"
-                      SelectedIndex="{Binding SelectedReservation.Kunde, Converter={StaticResource AutoKlasseEnumConverter}}"  />            
-            <DatePicker Grid.Column="1" Grid.Row="3" SelectedDate="{Binding SelectedReservation.Von}" DisplayDateEnd="12/31/2020" DisplayDateStart="1/1/1900" />
-            <DatePicker Grid.Column="1" Grid.Row="4" SelectedDate="{Binding SelectedReservation.Bis}" DisplayDateEnd="12/31/2020" DisplayDateStart="1/1/1900" />
+            <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Autos, Mode=OneWay}" SelectedValue="{Binding SelectedReservation.Auto}" DisplayMemberPath="Marke" />
+            <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Kunden, Mode=OneWay}" SelectedValue="{Binding SelectedReservation.Kunde}" DisplayMemberPath="Nachname" />
+            <DatePicker Grid.Column="1" Grid.Row="4" SelectedDate="{Binding SelectedReservation.Von}" />
+            <DatePicker Grid.Column="1" Grid.Row="5" SelectedDate="{Binding SelectedReservation.Bis}" />
         </Grid>
     </Grid>
 </UserControl>

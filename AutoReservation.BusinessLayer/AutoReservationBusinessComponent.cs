@@ -30,7 +30,6 @@ namespace AutoReservation.BusinessLayer
                 catch (OptimisticConcurrencyException ex)
                 {
                     Console.WriteLine("AutoReservationBusinessComponent ConcurrencyException");
-                    //context.AcceptAllChanges();
                     context.Refresh(System.Data.Objects.RefreshMode.StoreWins, autoModified);
                     throw new LocalOptimisticConcurrencyException<Auto>(ex.Message);
                 }
@@ -56,34 +55,15 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                var result = from auto in context.Autos
-                             where auto.Id == key
-                             select auto;
-                return result.FirstOrDefault();
+                return context.Autos.Where(a => a.Id == key).FirstOrDefault();
             }
         }
         public List<Auto> GetAutos()
         {
-            //Console.WriteLine("AutoReservationBusinessComponent Anfang");
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                //Console.WriteLine("AutoReservationBusinessComponent Linq");
-                var result = from auto in context.Autos
-                             select auto;
-                return result.ToList();
-                //List<Auto> res = new List<Auto>();
-
-                //Console.WriteLine("AutoReservationBusinessComponent foreach");
-                //foreach (Auto auto in result)
-                //{
-                    //Console.WriteLine("AutoReservationBusinessComponent Auto.Marke: " + auto.Marke);
-                    //res.Add(auto);
-                //}
-                //Console.WriteLine("AutoReservationBusinessComponent Ende");
-                //return res;
+                return context.Autos.ToList();
             }
-
-            //return context.Autos.ToList<Auto>();
         }
         #endregion Auto
 
@@ -134,11 +114,7 @@ namespace AutoReservation.BusinessLayer
         public Reservation GetReservation(int key)
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
-            {
-                //var result = from reservation in context.Reservationen
-                //             where reservation.ReservationsNr == key
-                //             select reservation;
-                //return result.FirstOrDefault();
+            {              
                 return context.Reservationen.Include("Auto").Include("Kunde").Where(a => a.ReservationsNr == key).FirstOrDefault();
             }
         }
@@ -146,29 +122,9 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                ////Hier werden nicht alle reservationen zurückgegeben
-                //var result = from reservation in context.Reservationen
-                //             select reservation;
-
-                ////Test output begin
-                ////Reservation test = (Reservation)result.FirstOrDefault();
-                ////Console.WriteLine("AutoReservationBusinessComponent Resultate GetReservation:");
-
-                ////Console.WriteLine("AutoId:" +test.AutoId );
-                ////Console.WriteLine("reservation auto ref: " + test.AutoReference);
-                ////Console.WriteLine("reservation auto Id: " + test.Auto.Id);
-                ////Console.WriteLine("reservation auto marke: " + test.Auto.Marke);
-                ////Console.WriteLine("reservation auto tagestarif: " + test.Auto.Tagestarif);
-
-                ////Console.WriteLine("reservation kunde ref: " + test.KundeReference);
-                ////Console.WriteLine("reservation kunde id: " + test.Kunde.Id);
-                ////Console.WriteLine("reservation kunde nachn: " + test.Kunde.Nachname);
-                ////Console.WriteLine("reservation kunde vorn: " + test.Kunde.Vorname);
-                ////Console.WriteLine("reservation kunde geb: " + test.Kunde.Geburtsdatum);
-                ////Test output end
-
-                //return result.ToList();
-                return context.Reservationen.Include("Auto").Include("Kunde").ToList();
+              
+                    return context.Reservationen.Include("Auto").Include("Kunde").ToList();
+                
             }
         }
         #endregion Reservationen
@@ -219,22 +175,15 @@ namespace AutoReservation.BusinessLayer
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                var result = from kunde in context.Kunden
-                             where kunde.Id == key
-                             select kunde;
-                return result.FirstOrDefault();
+                return context.Kunden.Where(k => k.Id == key).FirstOrDefault();
             }
         }
         public List<Kunde> GetKunden()
         {
             using (AutoReservationEntities context = new AutoReservationEntities())
             {
-                var result = from kunde in context.Kunden
-                             select kunde;
-                return result.ToList();
+                return context.Kunden.ToList();
             }
-
-            //return context.Kunden.ToList<Kunde>();
         }
         #endregion Kunden
     }

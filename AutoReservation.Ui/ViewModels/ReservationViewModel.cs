@@ -1,26 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using AutoReservation.Common.DataTransferObjects;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
+using AutoReservation.Common.DataTransferObjects;
 
 namespace AutoReservation.Ui.ViewModels
 {
-    class ReservationViewModel : ViewModelBase
+    public class ReservationViewModel : ViewModelBase
     {
-        private readonly List<ReservationDto> reservationenOriginal = new List<ReservationDto>();
-        private ObservableCollection<ReservationDto> reservationen;
-        public ObservableCollection<ReservationDto> Reservationen
+        private readonly List<ReservationDto> reservationOriginal = new List<ReservationDto>();
+        private ObservableCollection<ReservationDto> reservations;
+        public ObservableCollection<ReservationDto> Reservations
         {
             get
             {
-                if (reservationen == null)
+                if (reservations == null)
                 {
-                    reservationen = new ObservableCollection<ReservationDto>();
+                    reservations = new ObservableCollection<ReservationDto>();
                 }
-                return reservationen;
+                return reservations;
+            }
+        }
+
+        private ObservableCollection<AutoDto> autos;
+        public ObservableCollection<AutoDto> Autos
+        {
+            get
+            {
+                if (autos == null)
+                {
+                    autos = new ObservableCollection<AutoDto>();
+                }
+                return autos;
+            }
+        }
+
+        private ObservableCollection<KundeDto> kunden;
+        public ObservableCollection<KundeDto> Kunden
+        {
+            get
+            {
+                if (kunden == null)
+                {
+                    kunden = new ObservableCollection<KundeDto>();
+                }
+                return kunden;
             }
         }
 
@@ -35,6 +60,36 @@ namespace AutoReservation.Ui.ViewModels
                     SendPropertyChanging(() => SelectedReservation);
                     selectedReservation = value;
                     SendPropertyChanged(() => SelectedReservation);
+                }
+            }
+        }
+
+        private ReservationDto selectedAuto;
+        public ReservationDto SelectedAuto
+        {
+            get { return selectedAuto; }
+            set
+            {
+                if (selectedAuto != value)
+                {
+                    SendPropertyChanging(() => SelectedAuto);
+                    selectedAuto = value;
+                    SendPropertyChanged(() => SelectedAuto);
+                }
+            }
+        }
+
+        private ReservationDto selectedKunde;
+        public ReservationDto SelectedKunde
+        {
+            get { return selectedKunde; }
+            set
+            {
+                if (selectedKunde != value)
+                {
+                    SendPropertyChanging(() => selectedKunde);
+                    selectedKunde = value;
+                    SendPropertyChanged(() => SelectedKunde);
                 }
             }
         }
@@ -61,14 +116,25 @@ namespace AutoReservation.Ui.ViewModels
 
         protected override void Load()
         {
-            Reservationen.Clear();
-            reservationenOriginal.Clear();
+            Kunden.Clear();
+            foreach (var kunde in Service.GetKunden())
+            {
+                Kunden.Add(kunde);
+            }
+            Autos.Clear();
+
+            foreach (var auto in Service.GetAutos())
+            {
+                Autos.Add(auto);
+            }
+            Reservations.Clear();
+            reservationOriginal.Clear();
             foreach (ReservationDto reservation in Service.GetReservationen())
             {
-                Reservationen.Add(reservation);
-                reservationenOriginal.Add((ReservationDto)reservation.Clone());
+                Reservations.Add(reservation);
+                reservationOriginal.Add((ReservationDto)reservation.Clone());
             }
-            SelectedReservation = Reservationen.FirstOrDefault();
+            SelectedReservation = Reservations.FirstOrDefault();
         }
 
         private bool CanLoad()
@@ -99,16 +165,16 @@ namespace AutoReservation.Ui.ViewModels
 
         private void SaveData()
         {
-            foreach (ReservationDto reservation in Reservationen)
+            foreach (ReservationDto res in Reservations)
             {
-                if (reservation.ReservationNr == default(int))
+                if (res.ReservationNr == default(int))
                 {
-                    Service.AddReservation(reservation);
+                    Service.AddReservation(res);
                 }
                 else
                 {
-                    ReservationDto original = reservationenOriginal.Where(ro => ro.ReservationNr == reservation.ReservationNr).FirstOrDefault();
-                    Service.UpdateReservation(reservation, original);
+                    ReservationDto original = reservationOriginal.Where(ao => ao.ReservationNr == res.ReservationNr).FirstOrDefault();
+                    Service.UpdateReservation(res, original);
                 }
             }
             Load();
@@ -122,12 +188,12 @@ namespace AutoReservation.Ui.ViewModels
             }
 
             StringBuilder errorText = new StringBuilder();
-            foreach (ReservationDto reservation in Reservationen)
+            foreach (ReservationDto auto in Reservations)
             {
-                string error = reservation.Validate();
+                string error = auto.Validate();
                 if (!string.IsNullOrEmpty(error))
                 {
-                    errorText.AppendLine(reservation.ToString());
+                    errorText.AppendLine(auto.ToString());
                     errorText.AppendLine(error);
                 }
             }
@@ -135,7 +201,6 @@ namespace AutoReservation.Ui.ViewModels
             ErrorText = errorText.ToString();
             return string.IsNullOrEmpty(ErrorText);
         }
-
 
         #endregion
 
@@ -160,7 +225,7 @@ namespace AutoReservation.Ui.ViewModels
 
         private void New()
         {
-            Reservationen.Add(new ReservationDto { Von = DateTime.Today, Bis = DateTime.Today });
+            Reservations.Add(new ReservationDto());
         }
 
         private bool CanNew()
@@ -204,5 +269,6 @@ namespace AutoReservation.Ui.ViewModels
         }
 
         #endregion
+
     }
 }

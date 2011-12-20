@@ -10,7 +10,7 @@ namespace AutoReservation.Ui.Factory
     {
         public override IAutoReservationService CreateAutoReservationServiceInstance()
         {
-            return GetCreatorInstance().CreateAutoReservationServiceInstance();
+            return new ChannelProxy();
         }
     }
 }

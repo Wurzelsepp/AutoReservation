@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Factory\ChannelProxy.cs" />
     <Compile Include="Factory\Creator.cs" />
     <Compile Include="Factory\LocalDataAccessCreator.cs" />
     <Compile Include="Factory\RemoteDataAccessCreator.cs" />
