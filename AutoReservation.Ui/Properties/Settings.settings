@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="BusinessLayerType" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">AutoReservation.Ui.Factory.BusinessLayerCreator, AutoReservation.Ui</Value>
+      <Value Profile="(Default)">AutoReservation.Ui.Factory.LocalDataAccessCreator</Value>
     </Setting>
   </Settings>
 </SettingsFile>

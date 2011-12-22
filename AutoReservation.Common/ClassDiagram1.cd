@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AutoReservation.Common.DataTransferObjects.AutoDto">
+    <Position X="1" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAICAAASAACAEAAFBAAAAQQAAAAAAAAAAAAAAAAAAhA=</HashCode>
+      <FileName>DataTransferObjects\AutoDto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AutoKlasse" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AutoReservation.Common.DataTransferObjects.DtoBase" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAACAAAAQCAAAAAABiAAAAEAAAAAAAAAAABA=</HashCode>
+      <FileName>DataTransferObjects\DtoBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoReservation.Common.DataTransferObjects.KundeDto">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgCAAAAEAAAAgAAAAIAAAAACAAAAAgAAAhA=</HashCode>
+      <FileName>DataTransferObjects\KundeDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoReservation.Common.DataTransferObjects.ReservationDto">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQACIAAAECAAAACAAAAAgIAAAICAAACAAABA=</HashCode>
+      <FileName>DataTransferObjects\ReservationDto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Auto" />
+      <Property Name="Kunde" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="AutoReservation.Common.DataTransferObjects.AutoKlasse" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>DataTransferObjects\AutoDto.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

@@ -1,14 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AutoReservation.Common.Interfaces;
-using AutoReservation.Dal;
-using AutoReservation.BusinessLayer;
-using System;
-using AutoReservation.Service.Wcf;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using AutoReservation.Common.DataTransferObjects;
-using AutoReservation.Common.Exceptions;
-using System.ServiceModel;
+using AutoReservation.Common.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoReservation.Testing
 {
@@ -16,11 +10,6 @@ namespace AutoReservation.Testing
     public abstract class ServiceTestBase
     {
         protected abstract IAutoReservationService Target { get; }
-        //Autos Kunden Reservationen
-        //##########################
-        //noch nicht implementiert
-        //Updaten => sehe hier noch nicht den Unterschied zu Updates
-        //Updates mit Concurrency Exception => Exception wird nur im Remotefall nicht richtig durchs Interface weitergereicht
 
         #region Abfragen einer Liste
         [TestMethod]

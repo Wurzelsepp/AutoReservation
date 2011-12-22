@@ -7,7 +7,7 @@ using AutoReservation.Common.Interfaces;
 
 namespace AutoReservation.Ui.Factory
 {
-    class ChannelProxy : ClientBase<IAutoReservationService>, IAutoReservationService
+    public class ChannelProxy : ClientBase<IAutoReservationService>, IAutoReservationService
     {
         public List<Common.DataTransferObjects.AutoDto> GetAutos()
         {
